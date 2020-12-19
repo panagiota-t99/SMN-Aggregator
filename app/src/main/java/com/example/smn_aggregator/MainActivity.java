@@ -22,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnInstagram;
     private Button btnTwitter;
-    public static final String TAG = "Login";
+    public static final String TAG = "SMN_Aggregator_App_Debug";
+
+    private Button btnContinue;
 
 
 
@@ -31,19 +33,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btnContinue = findViewById(R.id.btnContinue);
+        btnContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FunctionsActivity.class);
+                Log.d(TAG, "continue to FunctionsActivity: Approved");
+                startActivity(intent);
+            }
+        });
+
         btnFacebook = (LoginButton) findViewById(R.id.btnFacebook);
         btnFacebook.setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY);
+        btnFacebook.setLoginText("Sign in to Facebook");
         callbackManager = CallbackManager.Factory.create();
         btnFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
-                Log.d(TAG, "onSuccess: proceed...");
+                Log.d(TAG, "successful log in");
             }
             @Override
             public void onCancel() {
                 // App code
-                Log.d(TAG, "onCancel: canceling... ");
             }
             @Override
             public void onError(FacebookException exception) {

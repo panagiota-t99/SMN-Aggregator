@@ -2,7 +2,9 @@ package com.example.smn_aggregator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,7 +13,7 @@ public class FunctionsActivity extends AppCompatActivity {
     private Button btnTrendingHashtags;
     private Button btnPost;
     private Button btnStory;
-    public static final String TAG = "Function";
+    public static final String TAG = "SMN_Aggregator_App_Debug";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,9 @@ public class FunctionsActivity extends AppCompatActivity {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "FunctionsActivity --> onClick: move to PostActivity");
+                Intent intent = new Intent(FunctionsActivity.this, PostActivity.class);
+                startActivity(intent);
 
             }
         });
