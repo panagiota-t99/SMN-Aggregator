@@ -45,7 +45,9 @@ public class FunctionsActivity extends AppCompatActivity {
         btnStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.d(TAG, "FunctionsActivity --> onClick: move to StoryActivity");
+                Intent intent = new Intent(FunctionsActivity.this, StoryActivity.class);
+                startActivity(intent);
             }
         });
 

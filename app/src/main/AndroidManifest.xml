@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.smn_aggregator">
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SMN_Aggregator">
-        <activity android:name=".FacebookPostStory"></activity>
+        <activity android:name=".InstagramPostStory"></activity>
+        <activity android:name=".StoryActivity" />
+        <activity android:name=".FacebookPostStory" />
         <activity android:name=".PostActivity" />
         <activity android:name=".FunctionsActivity" />
 

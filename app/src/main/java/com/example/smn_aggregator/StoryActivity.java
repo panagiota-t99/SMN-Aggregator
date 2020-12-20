@@ -10,54 +10,56 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class PostActivity extends AppCompatActivity {
+public class StoryActivity extends AppCompatActivity {
 
-    private Button btnPostFacebook;
-    private Button btnPostInstagram;
-    private Button btnPostTwitter;
+    private Button btnStoryFacebook;
+    private Button btnStoryInstagram;
+    private Button btnStoryTwitter;
 
     public static final String TAG = "SMN_Aggregator_App_Debug";
     public static final String packageName = "com.instagram.android";
+    public static final String ACTION = "story";
     private PackageManager pm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post);
-        
+        setContentView(R.layout.activity_story);
+
         Intent intent = getIntent();
         if (intent!=null){
 
             pm = getPackageManager();
-            btnPostFacebook = findViewById(R.id.btnPostFacebook);
-            btnPostInstagram = findViewById(R.id.btnPostInstagram);
-            btnPostFacebook.setOnClickListener(new View.OnClickListener() {
+            btnStoryFacebook = findViewById(R.id.btnStoryFacebook);
+            btnStoryInstagram = findViewById(R.id.btnStoryInstagram);
+            btnStoryTwitter = findViewById(R.id.btnStoryTwitter);
+
+            btnStoryFacebook.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "PostActivity --> onClick: Facebook post");
-                    Intent intent1 = new Intent(PostActivity.this, FacebookPostStory.class);
+                    Log.d(TAG, "StoryActivity --> onClick: Facebook story");
+                    Intent intent1 = new Intent(StoryActivity.this, FacebookPostStory.class);
                     startActivity(intent1);
                 }
             });
 
-
-            btnPostInstagram.setOnClickListener(new View.OnClickListener() {
+            btnStoryInstagram.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isPackageInstalled(packageName,pm)){
-                        Log.d(TAG, "PostActivity --> onClick: Instagram post ");
-                        Intent intent2 = new Intent(PostActivity.this, InstagramPostStory.class);
+                        Log.d(TAG, "StoryActivity --> onClick: Instagram story ");
+                        Intent intent2 = new Intent(StoryActivity.this, InstagramPostStory.class);
                         startActivity(intent2);
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "Instagram must be installed on the device!", Toast.LENGTH_LONG).show();
                     }
-
                 }
             });
-
-
         }
+
+
+
     }
 
     private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
@@ -68,4 +70,6 @@ public class PostActivity extends AppCompatActivity {
             return false;
         }
     }
+
+
 }
