@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.facebook.share.model.ShareHashtag;
 import com.facebook.share.model.SharePhoto;
@@ -70,10 +71,11 @@ public class FacebookPostStory extends AppCompatActivity {
             btnPost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (imageUri!=null || !emptyHashtag) {
+                    if (imageUri!=null) {
                         Log.d(TAG, "FacebookPostStory --> onClick: post action accepted ");
                         postToFacebook();
-                    }
+                    }else
+                        Toast.makeText(FacebookPostStory.this, "You have to select an image first!", Toast.LENGTH_LONG).show();
                 }
             });
 

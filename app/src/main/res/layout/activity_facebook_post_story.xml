@@ -10,21 +10,20 @@
         android:id="@+id/txtHashtag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
-        android:text="Hashtag (optional)"
+        android:layout_marginEnd="32dp"
+        android:text="Hashtag "
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/txtHashtagInput"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/txtHashtagInput"
-        android:layout_width="174dp"
-        android:layout_height="46dp"
+        android:layout_width="246dp"
+        android:layout_height="36dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:inputType="text"
@@ -64,4 +63,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtOptional"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="*It's optional."
+        android:textSize="12sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/txtHashtag"
+        app:layout_constraintStart_toStartOf="@+id/txtHashtag"
+        app:layout_constraintTop_toBottomOf="@+id/txtHashtag" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.facebook.share.model.ShareHashtag;
 import com.facebook.share.model.SharePhoto;
@@ -60,14 +61,13 @@ public class InstagramPostStory extends AppCompatActivity {
                     if (imageUri!=null) {
                         Log.d(TAG, "InstagramPostStory --> onClick: post action accepted " );
                         postToInstagram();
-
                     }
+                    else
+                        Toast.makeText(InstagramPostStory.this, "You have to select an image first!", Toast.LENGTH_LONG).show();
                 }
             });
 
         }
-
-
     }
 
 
