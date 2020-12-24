@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="32dp"
         android:text="Hashtag "
         android:textColor="@color/black"
@@ -23,20 +23,24 @@
     <EditText
         android:id="@+id/txtHashtagInput"
         android:layout_width="246dp"
-        android:layout_height="36dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:inputType="text"
         app:layout_constraintBaseline_toBaselineOf="@+id/txtHashtag"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSelectImage"
         android:layout_width="136dp"
         android:layout_height="40dp"
         android:layout_marginTop="32dp"
+        android:background="@drawable/fb_style"
         android:text="Select image"
         android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtHashtag" />
@@ -48,18 +52,23 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnFacebookExecutePost"
+        app:layout_constraintBottom_toTopOf="@+id/btnPhotoPost"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSelectImage"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <Button
-        android:id="@+id/btnFacebookExecutePost"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPhotoPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:text="Post"
+        android:background="@drawable/fb_style"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

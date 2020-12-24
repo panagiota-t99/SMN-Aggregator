@@ -18,7 +18,7 @@ public class StoryActivity extends AppCompatActivity {
 
     public static final String TAG = "SMN_Aggregator_App_Debug";
     public static final String packageName = "com.instagram.android";
-    public static final String ACTION = "story";
+    public static final String TYPE = "photo";
     private PackageManager pm;
 
     @Override
@@ -39,6 +39,7 @@ public class StoryActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Log.d(TAG, "StoryActivity --> onClick: Facebook story");
                     Intent intent1 = new Intent(StoryActivity.this, FacebookPostStory.class);
+                    intent1.putExtra("type", TYPE);
                     startActivity(intent1);
                 }
             });

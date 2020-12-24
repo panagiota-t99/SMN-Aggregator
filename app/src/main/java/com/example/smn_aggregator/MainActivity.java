@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private LoginButton btnFacebook;
     private CallbackManager callbackManager;
 
-    private Button btnInstagram;
     private Button btnTwitter;
     public static final String TAG = "SMN_Aggregator_App_Debug";
 
@@ -64,57 +63,34 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-        btnInstagram = findViewById(R.id.btnInstagramLogin);
-        btnTwitter = findViewById(R.id.btnTwitterLogin);
-
         /*
-        btnFacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // btnFacebook.setEnabled(false);
-               // continueToFunctionsActivity();
-
-            }
-        });*/
-
-
-        btnInstagram.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnInstagram.setEnabled(false);
-                continueToFunctionsActivity();
-            }
-        });
-
-
+        btnTwitter = findViewById(R.id.btnTwitterLogin);
         btnTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnTwitter.setEnabled(false);
                 continueToFunctionsActivity();
             }
-        });
+        });*/
     }
 
+    /*
     public boolean checkButtons(){
         if (!btnFacebook.isEnabled() && !btnInstagram.isEnabled() && !btnTwitter.isEnabled()){
             Log.d(TAG, "checkButtons: All buttons are disabled");
             return true;
         }
         return false;
+    }*/
 
-    }
-
+    /*
     public void continueToFunctionsActivity(){
         if (checkButtons()){
             Intent intent = new Intent(MainActivity.this, FunctionsActivity.class);
             Log.d(TAG, "continueToFunctionsActivity: Approved");
             startActivity(intent);
         }
-
-    }
+    }*/
 
 
     @Override
@@ -122,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
 
 
 }

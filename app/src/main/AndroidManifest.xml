@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SMN_Aggregator">
-        <activity android:name=".InstagramPostStory"></activity>
+        <activity android:name=".FacebookPostType"></activity>
+        <activity android:name=".InstagramPostStory" />
         <activity android:name=".StoryActivity" />
         <activity android:name=".FacebookPostStory" />
         <activity android:name=".PostActivity" />

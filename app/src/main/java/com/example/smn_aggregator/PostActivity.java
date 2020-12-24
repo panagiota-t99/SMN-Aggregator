@@ -35,7 +35,7 @@ public class PostActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "PostActivity --> onClick: Facebook post");
-                    Intent intent1 = new Intent(PostActivity.this, FacebookPostStory.class);
+                    Intent intent1 = new Intent(PostActivity.this, FacebookPostType.class);
                     startActivity(intent1);
                 }
             });
