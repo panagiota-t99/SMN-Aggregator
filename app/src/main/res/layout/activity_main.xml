@@ -7,33 +7,38 @@
     tools:context=".MainActivity">
 
     <com.facebook.login.widget.LoginButton
-        android:id="@+id/btnFacebook"
-        android:layout_width="wrap_content"
+        android:id="@+id/facebookLoginButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="65dp"
+        android:textAlignment="textEnd"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnTwitterLogin"
+    <com.twitter.sdk.android.core.identity.TwitterLoginButton
+        android:id="@+id/twitterLoginButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Twitter"
-        app:layout_constraintEnd_toEndOf="@+id/btnFacebook"
-        app:layout_constraintStart_toStartOf="@+id/btnFacebook"
-        app:layout_constraintTop_toBottomOf="@+id/btnFacebook" />
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/facebookLoginButton"
+        app:layout_constraintStart_toStartOf="@+id/facebookLoginButton"
+        app:layout_constraintTop_toBottomOf="@+id/facebookLoginButton" />
 
     <Button
-        android:id="@+id/btnContinue"
+        android:id="@+id/continueButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="Continue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnTwitterLogin" />
+        app:layout_constraintEnd_toEndOf="@+id/twitterLoginButton"
+        app:layout_constraintStart_toStartOf="@+id/twitterLoginButton"
+        app:layout_constraintTop_toBottomOf="@+id/twitterLoginButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

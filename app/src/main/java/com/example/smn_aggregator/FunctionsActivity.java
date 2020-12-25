@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class FunctionsActivity extends AppCompatActivity {
 
@@ -41,7 +42,6 @@ public class FunctionsActivity extends AppCompatActivity {
             }
         });
 
-
         btnStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +50,5 @@ public class FunctionsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 }
