@@ -1,7 +1,13 @@
 package com.example.smn_aggregator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TwitterLoginButton twitterLoginButton;
     public static final String TAG = "SMN_Aggregator_App_Debug";
+    public static final int PERMISSION_CODE = 100;
 
+    private boolean permission;
     private Button continueButton;
 
     @Override
@@ -44,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
         Twitter.initialize(this);
         setContentView(R.layout.activity_main);
 
+        permission = false;
         continueButton = findViewById(R.id.continueButton);
-        continueButton.setEnabled(false);
+        continueButton.setEnabled(true);
 
         //FACEBOOK LOGIN BUTTON
         facebookLoginButton = (LoginButton) findViewById(R.id.facebookLoginButton);
@@ -72,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Facebook Login Error!");
             }
         });
+
 
         //TWITTER LOGIN BUTTON
         twitterLoginButton = (TwitterLoginButton)findViewById(R.id.twitterLoginButton);
@@ -101,16 +111,19 @@ public class MainActivity extends AppCompatActivity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, FunctionsActivity.class);
-                Log.d(TAG, "continue to FunctionsActivity: Approved");
-                startActivity(intent);
+                checkPermission();
+                if (permission){
+                    Intent intent = new Intent(MainActivity.this, FunctionsActivity.class);
+                    Log.d(TAG, "continue to FunctionsActivity: Approved");
+                    startActivity(intent);
+                }
             }
         });
 
     }
 
     public void checkButtons(){
-        if ((!facebookLoginButton.isEnabled()) && (!twitterLoginButton.isEnabled())){
+       if ((!facebookLoginButton.isEnabled()) && (!twitterLoginButton.isEnabled())){
             Log.d(TAG, "All buttons are disabled");
             Log.d(TAG, "Enabling continue button");
             enableContinueButton();
@@ -129,5 +142,37 @@ public class MainActivity extends AppCompatActivity {
         }else{
             facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    public void checkPermission() {
+        int hasReadContactsPermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (hasReadContactsPermission == PackageManager.PERMISSION_GRANTED){
+            Log.d(TAG, "Permission is already granted!");
+            permission = true;
+        }
+        else{
+            Log.d(TAG, "Permission does not exist. Requesting now...");
+            String[] permissionsToAsk = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(MainActivity.this, permissionsToAsk, PERMISSION_CODE);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode){
+            case PERMISSION_CODE:{
+                //if the request was denied, the arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "Permission Granted!!!");
+                    permission = true;
+                }
+                else
+                    Log.d(TAG, "Permission denied :(");
+                    permission = false;
+            }
+        }
+
     }
 }

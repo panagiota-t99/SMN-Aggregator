@@ -31,6 +31,7 @@ public class PostActivity extends AppCompatActivity {
             pm = getPackageManager();
             btnPostFacebook = findViewById(R.id.btnPostFacebook);
             btnPostInstagram = findViewById(R.id.btnPostInstagram);
+            btnPostTwitter = findViewById(R.id.btnPostTwitter);
             btnPostFacebook.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -53,6 +54,15 @@ public class PostActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Instagram must be installed on the device!", Toast.LENGTH_LONG).show();
                     }
 
+                }
+            });
+
+            btnPostTwitter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "PostActivity --> onClick: Twitter post");
+                    Intent intent1 = new Intent(PostActivity.this, TwitterPostType.class);
+                    startActivity(intent1);
                 }
             });
 
