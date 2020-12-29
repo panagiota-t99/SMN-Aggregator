@@ -2,7 +2,6 @@ package com.example.smn_aggregator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,17 +15,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
 
 public class TwitterPostStory extends AppCompatActivity {
 
     private Button btnText;
     private EditText txtTweet;
+    private static String txt;
 
     private Button btnSelectImage;
     private EditText txtTweetImage;
+    private static String txtImageCaption;
     private Button btnPostTweetImage;
-    private Uri imageUri;
+    private static Uri imageUri;
     private ImageView imageView;
     private File file;
 
@@ -46,13 +46,30 @@ public class TwitterPostStory extends AppCompatActivity {
             if (type.equals(TYPE1)){
                 setContentView(R.layout.twitter_text);
                 btnText = findViewById(R.id.btnPostTweetText);
+                checkTextInput();
+
                 btnText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        txtTweet = findViewById(R.id.txtTweetInput);
-                        String txt = txtTweet.getText().toString();
-                        TwitterTask task1 = new TwitterTask(TYPE1, txt);
-                        task1.execute();
+                        if (txt != null) {
+                            if (!txt.equals("")) {
+                                TwitterTask task1 = new TwitterTask(TYPE1, txt);
+                                task1.execute();
+                            }
+                        }
+                        else {
+                            txtTweet = findViewById(R.id.txtTweetInput);
+                            txt = txtTweet.getText().toString();
+
+                            if (!txt.equals("")) {
+                                TwitterTask task2 = new TwitterTask(TYPE1, txt);
+                                task2.execute();
+                                Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
+                                startActivity(intent);
+                            }
+                            else
+                                Toast.makeText(TwitterPostStory.this, "You have to enter a tweet!", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
             }
@@ -62,6 +79,8 @@ public class TwitterPostStory extends AppCompatActivity {
                 btnSelectImage = findViewById(R.id.btnSelectImageTwitter);
                 btnPostTweetImage = findViewById(R.id.btnPostTweetPhoto);
                 imageView = findViewById(R.id.TwitterImageView);
+                checkSelectedPhoto();
+                checkImageCaption();
 
                 btnSelectImage.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -70,16 +89,30 @@ public class TwitterPostStory extends AppCompatActivity {
                         openGallery();
                     }
                 });
+
                 btnPostTweetImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (imageUri!=null) {
                             Log.d(TAG, "TwitterPostStory --> onClick: post accepted ");
-                            txtTweetImage = findViewById(R.id.txtTweetPhotoInput);
-                            String txt = txtTweetImage.getText().toString();
-                            TwitterTask task2 = new TwitterTask(TYPE2, txt, file);
-                            task2.execute();
-                        }else
+                            if (txtImageCaption!=null){
+                                if (!txtImageCaption.equals("")){
+                                    TwitterTask task2 = new TwitterTask(TYPE2, txtImageCaption, file);
+                                    task2.execute();
+                                    Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                            else{
+                                txtTweetImage = findViewById(R.id.txtTweetPhotoInput);
+                                txtImageCaption = txtTweetImage.getText().toString();
+                                TwitterTask task3 = new TwitterTask(TYPE2, txtImageCaption, file);
+                                task3.execute();
+                                Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                        else
                             Toast.makeText(TwitterPostStory.this, "You have to select an image first!", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -93,18 +126,6 @@ public class TwitterPostStory extends AppCompatActivity {
         startActivityForResult(gallery, REQUEST_CODE);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "TwitterPostStory --> onActivityResult: chosen photo");
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            imageUri = data.getData();
-            imageView.setImageURI(imageUri);
-            file = new File(getRealPathFromURI(imageUri));
-            //Log.d(TAG, "onActivityResult: " + file);
-        }
-    }
-
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = { MediaStore.Images.Media.DATA };
         Cursor cursor = managedQuery(contentUri, proj, null, null, null);
@@ -112,4 +133,60 @@ public class TwitterPostStory extends AppCompatActivity {
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
+
+    private void checkTextInput(){
+        String tempFacebook = FacebookPostStory.getQuote();
+        if (tempFacebook != null){
+            if (!tempFacebook.equals("")) {
+                txt = tempFacebook;
+                txtTweet = findViewById(R.id.txtTweetInput);
+                txtTweet.setText(txt);
+                Log.d(TAG, "checkTextInput: " + txt);
+            }
+        }
+    }
+
+    private void checkImageCaption(){
+        String tempFacebook = FacebookPostStory.getHashtag();
+        if (tempFacebook!=null){
+            if (!tempFacebook.equals("")){
+                txtImageCaption = tempFacebook;
+                txtTweetImage = findViewById(R.id.txtTweetPhotoInput);
+                txtTweetImage.setText(txtImageCaption);
+                Log.d(TAG, "checkImageCaption: " + txtImageCaption);
+            }
+        }
+    }
+
+    private void checkSelectedPhoto(){
+        Uri tempFacebook = FacebookPostStory.getImageUri();
+        Uri tempInstagram = InstagramPostStory.getImageUri();
+        Log.d(TAG, "checkSelectedPhoto: temp facebook uri " + tempFacebook);
+        Log.d(TAG, "checkSelectedPhoto: temp twitter uri " + tempInstagram);
+        if (tempFacebook!=null) {
+            imageView.setImageURI(tempFacebook);
+            imageUri = tempFacebook;
+            file = new File(getRealPathFromURI(imageUri));
+        }
+        else if (tempInstagram!=null) {
+            imageView.setImageURI(tempInstagram);
+            imageUri = tempInstagram;
+            file = new File(getRealPathFromURI(imageUri));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            Log.d(TAG, "TwitterPostStory --> onActivityResult: chosen photo");
+            imageUri = data.getData();
+            imageView.setImageURI(imageUri);
+            file = new File(getRealPathFromURI(imageUri));
+            Log.d(TAG, "onActivityResult: " + file);
+        }
+    }
+
+    public  static Uri getImageUri(){ return imageUri; }
+    public static String getTxt(){ return txt; }
 }

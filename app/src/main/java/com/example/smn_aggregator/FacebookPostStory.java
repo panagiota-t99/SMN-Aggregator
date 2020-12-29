@@ -28,14 +28,16 @@ public class FacebookPostStory extends AppCompatActivity {
     private Button btnSelectImage;
     private Button btnPhotoPost;
     private ShareDialog shareDialog;
-    private String strHashtag;
+    private static String strHashtag;
     private ImageView img;
-    private Uri imageUri;
+    private static Uri imageUri;
     private Bitmap selectedImage;
     private boolean emptyHashtag;
-    private String quote;
+    private static String quote;
     private Button btnTextPost;
     private  EditText text;
+
+    private String type;
 
     public static final int REQUEST_CODE = 1;
     public static final String TYPE1 = "text";
@@ -48,19 +50,28 @@ public class FacebookPostStory extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            String type = intent.getStringExtra("type");
+            type = intent.getStringExtra("type");
             if (type.equals(TYPE1)) {
                 setContentView(R.layout.facebook_text);
                 btnTextPost = findViewById(R.id.btnTextPost);
+                checkTextInput();
+
                 btnTextPost.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        text = findViewById(R.id.txtTextInput);
-                        quote = text.getText().toString();
-                        if (!quote.equals(""))
-                            postQuoteToFacebook();
-                        else
-                            Toast.makeText(FacebookPostStory.this, "You have to enter a quote!", Toast.LENGTH_LONG).show();
+                        if (quote!=null) {
+                            if (!quote.equals(""))
+                                postQuoteToFacebook();
+                        }
+                        else {
+                            text = findViewById(R.id.txtTextInput);
+                            quote = text.getText().toString();
+
+                            if (!quote.equals(""))
+                                postQuoteToFacebook();
+                            else
+                                Toast.makeText(FacebookPostStory.this, "You have to enter a quote!", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
             }
@@ -70,7 +81,8 @@ public class FacebookPostStory extends AppCompatActivity {
                 emptyHashtag = true;
                 btnSelectImage = findViewById(R.id.btnSelectImage);
                 btnPhotoPost = findViewById(R.id.btnPhotoPost);
-                img = (ImageView)findViewById(R.id.imageViewGallery);
+                img = (ImageView)findViewById(R.id.FacebookImageView);
+                checkSelectedPhoto();
 
                 btnSelectImage.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -79,6 +91,7 @@ public class FacebookPostStory extends AppCompatActivity {
                         openGallery();
                     }
                 });
+
                 btnPhotoPost.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -106,6 +119,44 @@ public class FacebookPostStory extends AppCompatActivity {
             Log.d(TAG, "FacebookPostStory --> Hashtag: " + strHashtag);
         }
     }
+
+    private void checkTextInput(){
+        String tempTwitter = TwitterPostStory.getTxt();
+        if (tempTwitter!=null){
+            if (!tempTwitter.equals("")) {
+                quote = tempTwitter;
+                text = findViewById(R.id.txtTextInput);
+                text.setText(quote);
+                Log.d(TAG, "checkTextInput: " + quote);
+            }
+        }
+    }
+
+    private void checkSelectedPhoto(){
+        Uri tempInstagram = InstagramPostStory.getImageUri();
+        Uri tempTwitter = TwitterPostStory.getImageUri();
+        Log.d(TAG, "checkSelectedPhoto: temp facebook uri " + tempInstagram);
+        Log.d(TAG, "checkSelectedPhoto: temp twitter uri " + tempTwitter);
+        if (tempInstagram!=null) {
+            img.setImageURI(tempInstagram);
+            imageUri = tempInstagram;
+            try {
+                selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (tempTwitter!=null) {
+            img.setImageURI(tempTwitter);
+            imageUri = tempTwitter;
+            try {
+                selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     private void openGallery() {
         Log.d(TAG, "FacebookPostStory --> openGallery: in gallery");
@@ -145,7 +196,7 @@ public class FacebookPostStory extends AppCompatActivity {
                 shareDialog.show(content, ShareDialog.Mode.WEB);
             }
             else
-                Log.d(TAG, "postToFacebook: error");
+                Log.d(TAG, "postToFacebook: error with hashtag");
         }
         else if (emptyHashtag){
             if (shareDialog.canShow(SharePhotoContent.class)) {
@@ -160,15 +211,13 @@ public class FacebookPostStory extends AppCompatActivity {
             else
                 Log.d(TAG, "postToFacebook: error");
         }
-
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "FacebookPostStory --> onActivityResult: chosen photo");
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            Log.d(TAG, "FacebookPostStory --> onActivityResult: chosen photo");
             imageUri = data.getData();
             img.setImageURI(imageUri);
             try {
@@ -177,7 +226,14 @@ public class FacebookPostStory extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        else{
+            Intent intent = new Intent(FacebookPostStory.this, PostActivity.class);
+            startActivity(intent);
+        }
     }
 
 
+    public static Uri getImageUri(){ return imageUri; }
+    public static String getQuote() { return quote; }
+    public static String getHashtag() { return strHashtag; }
 }

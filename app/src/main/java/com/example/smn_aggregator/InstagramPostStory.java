@@ -2,7 +2,6 @@ package com.example.smn_aggregator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,14 +10,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.facebook.share.model.ShareHashtag;
-import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
-import com.facebook.share.widget.ShareDialog;
 
 import java.io.IOException;
 
@@ -27,8 +20,10 @@ public class InstagramPostStory extends AppCompatActivity {
     private Button btnSelectImage;
     private Button btnPost;
     private ImageView img;
-    private Uri imageUri;
+    private static Uri imageUri;
     private Bitmap selectedImage;
+
+    private boolean flag = false;
 
     public static final int REQUEST_CODE = 1;
     public static final String TAG = "SMN_Aggregator_App_Debug";
@@ -45,7 +40,8 @@ public class InstagramPostStory extends AppCompatActivity {
         if (intent!=null){
             btnSelectImage = findViewById(R.id.btnSelectImage);
             btnPost = findViewById(R.id.btnInstagramExecutePost);
-            img = (ImageView)findViewById(R.id.imageViewGallery);
+            img = (ImageView)findViewById(R.id.InstagramImageView);
+            checkSelectedPhoto();
 
             btnSelectImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,23 +62,33 @@ public class InstagramPostStory extends AppCompatActivity {
                         Toast.makeText(InstagramPostStory.this, "You have to select an image first!", Toast.LENGTH_LONG).show();
                 }
             });
-
         }
     }
 
-
+    private void checkSelectedPhoto(){
+        Uri tempFacebook = FacebookPostStory.getImageUri();
+        Uri tempTwitter = TwitterPostStory.getImageUri();
+        Log.d(TAG, "checkSelectedPhoto: temp facebook uri " + tempFacebook);
+        Log.d(TAG, "checkSelectedPhoto: temp twitter uri " + tempTwitter);
+        if (tempFacebook!=null) {
+            img.setImageURI(tempFacebook);
+            imageUri = tempFacebook;
+        }
+        else if (tempTwitter!=null) {
+            img.setImageURI(tempTwitter);
+            imageUri = tempTwitter;
+        }
+    }
 
     private void postToInstagram() {
         Log.d(TAG, "InstagramPostStory --> onCreate: posting ");
         String type = "image/*";
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType(type);
+        flag = true;
         share.putExtra(Intent.EXTRA_STREAM, imageUri);
         startActivity(Intent.createChooser(share, "Share to"));
     }
-
-
-
 
     private void openGallery() {
         Log.d(TAG, "InstagramPostStory --> openGallery: in gallery");
@@ -91,10 +97,20 @@ public class InstagramPostStory extends AppCompatActivity {
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        Log.d(TAG, "onPostResume: here + flag = " + flag);
+        if (flag){
+            Intent i = new Intent(InstagramPostStory.this, PostActivity.class);
+            startActivity(i);
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "InstagramPostStory --> onActivityResult: chosen photo");
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE){
+            Log.d(TAG, "InstagramPostStory --> onActivityResult: chosen photo");
             imageUri = data.getData();
             img.setImageURI(imageUri);
             try {
@@ -103,5 +119,9 @@ public class InstagramPostStory extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static Uri getImageUri(){
+        return imageUri;
     }
 }

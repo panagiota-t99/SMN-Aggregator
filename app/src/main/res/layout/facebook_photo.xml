@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtHashtag" />
 
     <ImageView
-        android:id="@+id/imageViewGallery"
+        android:id="@+id/FacebookImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
