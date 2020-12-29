@@ -1,5 +1,8 @@
 package com.example.smn_aggregator;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
@@ -8,9 +11,12 @@ import android.util.Log;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
+import twitter4j.Trend;
+import twitter4j.Trends;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -24,6 +30,7 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
 
     public static final String TYPE1 = "text";
     public static final String TYPE2 = "photo";
+    public static final String TYPE3 = "trends";
     public static final String TAG = "SMN_Aggregator_App_Debug";
 
     public static final String consumer_key = "qoaRhCOH1SZrQ190tUsp3BeVE";
@@ -31,6 +38,12 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
     public static final String access_token = "1338583364631207944-7DOZADOzgmoo9b2iQ8kCeUBr50JE31";
     public static final String access_token_secret = "RJKgIm2lDSBQw4Z5aWPsJmJScWrKyBtuOWJUX2LDhvICa";
 
+    private Context context;
+
+    public TwitterTask(String type, Context context){
+        this.type = type;
+        this.context = context;
+    }
 
     public TwitterTask(String  PostType,String tweetText) {
         type = PostType;
@@ -61,6 +74,9 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
                 e.printStackTrace();
             }
         }
+        else if (type.equals(TYPE3)){
+            getTwitterTrends(twitter);
+        }
         return null;
     }
 
@@ -74,7 +90,6 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
         return twitter;
-
     }
 
     private void postTextOnlyTweet(Twitter twitter) throws TwitterException {
@@ -89,5 +104,19 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         Log.d(TAG, "TwitterTask --> postImageTweet: " + file);
     }
 
-
+    private void getTwitterTrends(Twitter twitter){
+        Trends trends;
+        //ArrayList<Trend> trendsList = new ArrayList<>();
+        try{
+            trends = twitter.getPlaceTrends(1);
+            /*for (Trend trend: trends.getTrends()){
+                trendsList.add(trend);
+            }*/
+            Intent intent = new Intent(context, Trendings.class);
+            intent.putExtra("trends", trends);
+            context.startActivity(intent);
+        }catch (TwitterException e){
+            e.printStackTrace();
+        }
+    }
 }

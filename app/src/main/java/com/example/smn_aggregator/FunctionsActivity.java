@@ -14,6 +14,7 @@ public class FunctionsActivity extends AppCompatActivity {
     private Button btnTrendingHashtags;
     private Button btnPost;
     private Button btnStory;
+    public static final String TYPE3 = "trends";
     public static final String TAG = "SMN_Aggregator_App_Debug";
 
     @Override
@@ -28,7 +29,8 @@ public class FunctionsActivity extends AppCompatActivity {
         btnTrendingHashtags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                TwitterTask twitterTask = new TwitterTask(TYPE3, FunctionsActivity.this);
+                twitterTask.execute();
             }
         });
 
