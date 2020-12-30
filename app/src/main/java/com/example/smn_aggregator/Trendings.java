@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.ArrayList;
 
+import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Trend;
 import twitter4j.Trends;
@@ -40,39 +43,32 @@ public class Trendings extends AppCompatActivity {
     private Button hashtag18;
     private Button hashtag19;
     private Button hashtag20;
-    private Button hashtag21;
-    private Button hashtag22;
-    private Button hashtag23;
-    private Button hashtag24;
-    private Button hashtag25;
-    private Button hashtag26;
-    private Button hashtag27;
-    private Button hashtag28;
-    private Button hashtag29;
-    private Button hashtag30;
-    private Button hashtag31;
-    private Button hashtag32;
-    private Button hashtag33;
-    private Button hashtag34;
-    private Button hashtag35;
-    private Button hashtag36;
-    private Button hashtag37;
-    private Button hashtag38;
-    private Button hashtag39;
-    private Button hashtag40;
-    private Button hashtag41;
-    private Button hashtag42;
-    private Button hashtag43;
-    private Button hashtag44;
-    private Button hashtag45;
-    private Button hashtag46;
-    private Button hashtag47;
-    private Button hashtag48;
-    private Button hashtag49;
-    private Button hashtag50;
 
     private Trends trends;
     private ArrayList<Trend> trendingHashtags = new ArrayList<>();
+    public static final String TYPE4 = "searchPosts";
+
+    private View.OnClickListener hashtagClickedListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            hashtagClicked(v);
+        }
+    };
+
+    private void hashtagClicked(View v){
+        Button buttonPressed = (Button)v;
+        Log.d(TAG, buttonPressed.getText().toString() + " WAS PRESSED!");
+        for (Trend trend: trendingHashtags){
+            if (buttonPressed.getText().toString() == trend.getName()){
+                Log.d(TAG, "WILL SEND THE TREND" + trend.getName() + "TO BE SEARCHED");
+
+                Query query = new Query(trend.getName());
+
+                TwitterTask twitterTask = new TwitterTask(TYPE4, Trendings.this, query);
+                twitterTask.execute();
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,36 +95,6 @@ public class Trendings extends AppCompatActivity {
         hashtag18 = findViewById(R.id.hashtag18);
         hashtag19 = findViewById(R.id.hashtag19);
         hashtag20 = findViewById(R.id.hashtag20);
-        hashtag21 = findViewById(R.id.hashtag21);
-        hashtag22 = findViewById(R.id.hashtag22);
-        hashtag23 = findViewById(R.id.hashtag23);
-        hashtag24 = findViewById(R.id.hashtag24);
-        hashtag25 = findViewById(R.id.hashtag25);
-        hashtag26 = findViewById(R.id.hashtag26);
-        hashtag27 = findViewById(R.id.hashtag27);
-        hashtag28 = findViewById(R.id.hashtag28);
-        hashtag29 = findViewById(R.id.hashtag29);
-        hashtag30 = findViewById(R.id.hashtag30);
-        hashtag31 = findViewById(R.id.hashtag31);
-        hashtag32 = findViewById(R.id.hashtag32);
-        hashtag33 = findViewById(R.id.hashtag33);
-        hashtag34 = findViewById(R.id.hashtag34);
-        hashtag35 = findViewById(R.id.hashtag35);
-        hashtag36 = findViewById(R.id.hashtag36);
-        hashtag37 = findViewById(R.id.hashtag37);
-        hashtag38 = findViewById(R.id.hashtag38);
-        hashtag39 = findViewById(R.id.hashtag39);
-        hashtag40 = findViewById(R.id.hashtag40);
-        hashtag41 = findViewById(R.id.hashtag41);
-        hashtag42 = findViewById(R.id.hashtag42);
-        hashtag43 = findViewById(R.id.hashtag43);
-        hashtag44 = findViewById(R.id.hashtag44);
-        hashtag45 = findViewById(R.id.hashtag45);
-        hashtag46 = findViewById(R.id.hashtag46);
-        hashtag47 = findViewById(R.id.hashtag47);
-        hashtag48 = findViewById(R.id.hashtag48);
-        hashtag49 = findViewById(R.id.hashtag49);
-        hashtag50 = findViewById(R.id.hashtag50);
 
         ArrayList<Button> hashtags = new ArrayList<>();
         hashtags.add(hashtag1);
@@ -151,36 +117,6 @@ public class Trendings extends AppCompatActivity {
         hashtags.add(hashtag18);
         hashtags.add(hashtag19);
         hashtags.add(hashtag20);
-        hashtags.add(hashtag21);
-        hashtags.add(hashtag22);
-        hashtags.add(hashtag23);
-        hashtags.add(hashtag24);
-        hashtags.add(hashtag25);
-        hashtags.add(hashtag26);
-        hashtags.add(hashtag27);
-        hashtags.add(hashtag28);
-        hashtags.add(hashtag29);
-        hashtags.add(hashtag30);
-        hashtags.add(hashtag31);
-        hashtags.add(hashtag32);
-        hashtags.add(hashtag33);
-        hashtags.add(hashtag34);
-        hashtags.add(hashtag35);
-        hashtags.add(hashtag36);
-        hashtags.add(hashtag37);
-        hashtags.add(hashtag38);
-        hashtags.add(hashtag39);
-        hashtags.add(hashtag40);
-        hashtags.add(hashtag41);
-        hashtags.add(hashtag42);
-        hashtags.add(hashtag43);
-        hashtags.add(hashtag44);
-        hashtags.add(hashtag45);
-        hashtags.add(hashtag46);
-        hashtags.add(hashtag47);
-        hashtags.add(hashtag48);
-        hashtags.add(hashtag49);
-        hashtags.add(hashtag50);
 
         for (Button btn: hashtags){btn.setVisibility(View.INVISIBLE);}
 
@@ -198,15 +134,44 @@ public class Trendings extends AppCompatActivity {
             Log.d(TAG, hashtag.getName());
         }
 
-        for (int i=0; i<10; i++){
+        for (int i=0; i<20; i++){
             hashtags.get(i).setVisibility(View.VISIBLE);
             hashtags.get(i).setText(trendingHashtags.get(i).getName());
         }
 
         Log.d(TAG, "WE GOT HASHTAGS");
+        Log.d(TAG, "Size = " + trendingHashtags.size());
 
+        EditText hashtagSearchText = findViewById(R.id.searchText);
+        Button hashtagSearchButton = findViewById(R.id.searchBtn);
 
+        hashtagSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = hashtagSearchText.getText().toString();
+                ArrayList<Trend> searchResultTrends = new ArrayList<>();
+                for (Trend trend: trendingHashtags){
+                    if (trend.getName().equals(text)){
+                        searchResultTrends.add(trend);
+                    }
+                }
+                for (Button btn: hashtags){btn.setVisibility(View.INVISIBLE);}
+                if (searchResultTrends.size() > 0){
+                    for (int i=0; i<searchResultTrends.size(); i++){
+                        hashtags.get(i).setVisibility(View.VISIBLE);
+                        hashtags.get(i).setText(searchResultTrends.get(i).getName());
+                    }
+                }else {
+                    hashtags.get(0).setVisibility(View.VISIBLE);
+                    hashtags.get(0).setText("No matching results found");
+                }
+            }
+        });
 
+        for (Button hashtagBtn: hashtags){
+            hashtagBtn.setEnabled(true);
+            hashtagBtn.setOnClickListener(hashtagClickedListener);
+        }
 
     }
 }
