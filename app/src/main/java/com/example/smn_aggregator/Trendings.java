@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+
+import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.ArrayList;
 
+import twitter4j.QueryResult;
 import twitter4j.Trend;
 import twitter4j.Trends;
 
@@ -178,6 +182,8 @@ public class Trendings extends AppCompatActivity {
         hashtags.add(hashtag49);
         hashtags.add(hashtag50);
 
+        for (Button btn: hashtags){btn.setVisibility(View.INVISIBLE);}
+
         Intent intent = getIntent();
         Log.d(TAG, "TRENDS ARRIVED");
         trends = (Trends)intent.getSerializableExtra("trends");
@@ -192,11 +198,14 @@ public class Trendings extends AppCompatActivity {
             Log.d(TAG, hashtag.getName());
         }
 
-        for (int i=0; i<50; i++){
+        for (int i=0; i<10; i++){
+            hashtags.get(i).setVisibility(View.VISIBLE);
             hashtags.get(i).setText(trendingHashtags.get(i).getName());
         }
 
         Log.d(TAG, "WE GOT HASHTAGS");
+
+
 
 
     }

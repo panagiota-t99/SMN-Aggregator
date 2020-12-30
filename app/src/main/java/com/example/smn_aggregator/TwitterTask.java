@@ -108,7 +108,7 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         Trends trends;
         //ArrayList<Trend> trendsList = new ArrayList<>();
         try{
-            trends = twitter.getPlaceTrends(1);
+            trends = twitter.getPlaceTrends(23424977 );
             /*for (Trend trend: trends.getTrends()){
                 trendsList.add(trend);
             }*/
