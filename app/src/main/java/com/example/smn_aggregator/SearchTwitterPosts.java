@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
@@ -27,7 +29,7 @@ public class SearchTwitterPosts extends AppCompatActivity {
     private ArrayList<Status> statuses = new ArrayList<>();
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private PostAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
     @Override
@@ -53,5 +55,13 @@ public class SearchTwitterPosts extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnPostClickListener(new PostAdapter.onPostClickListener() {
+            @Override
+            public void onPostClick(int position) {
+                Log.d(TAG, statuses.get(position).getUser().getScreenName() + "CLICKED");
+            }
+        });
+
     }
 }

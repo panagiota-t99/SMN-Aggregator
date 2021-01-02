@@ -16,6 +16,15 @@ import twitter4j.Status;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
     private ArrayList<Status> statuses;
+    private onPostClickListener postClickListener;
+
+    public interface onPostClickListener{
+        void onPostClick(int position);
+    }
+
+    public void setOnPostClickListener(onPostClickListener listener){
+        this.postClickListener = listener;
+    }
 
     public  static  class PostViewHolder extends RecyclerView.ViewHolder{
 
@@ -23,12 +32,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public TextView userTextView;
         public TextView textView;
 
-        public PostViewHolder(@NonNull View itemView) {
+        public PostViewHolder(@NonNull View itemView, onPostClickListener listener) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.imageView);
             userTextView = itemView.findViewById(R.id.userNameView);
             textView = itemView.findViewById(R.id.textView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onPostClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -40,7 +61,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
-        PostViewHolder postViewHolder = new PostViewHolder(v);
+        PostViewHolder postViewHolder = new PostViewHolder(v, postClickListener);
         return postViewHolder;
     }
 
