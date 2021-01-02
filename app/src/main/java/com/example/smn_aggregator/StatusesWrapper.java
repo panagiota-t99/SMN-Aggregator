@@ -9,7 +9,9 @@ public class StatusesWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private ArrayList<Status> statuses;
+    //private Status status;
 
+    //public StatusesWrapper(Status status) {this.status = status;}
     public StatusesWrapper(ArrayList<Status> statuses){
         this.statuses = statuses;
     }

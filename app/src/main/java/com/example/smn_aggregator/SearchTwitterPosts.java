@@ -59,7 +59,10 @@ public class SearchTwitterPosts extends AppCompatActivity {
         adapter.setOnPostClickListener(new PostAdapter.onPostClickListener() {
             @Override
             public void onPostClick(int position) {
-                Log.d(TAG, statuses.get(position).getUser().getScreenName() + "CLICKED");
+                Log.d(TAG, statuses.get(position).getUser().getScreenName() + " CLICKED");
+                Intent intent1 = new Intent(SearchTwitterPosts.this, ShowTwitterPost.class);
+                intent1.putExtra("status", statuses.get(position));
+                startActivity(intent1);
             }
         });
 
