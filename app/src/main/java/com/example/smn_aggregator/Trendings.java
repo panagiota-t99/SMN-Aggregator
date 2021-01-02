@@ -60,7 +60,7 @@ public class Trendings extends AppCompatActivity {
         Log.d(TAG, buttonPressed.getText().toString() + " WAS PRESSED!");
         for (Trend trend: trendingHashtags){
             if (buttonPressed.getText().toString() == trend.getName()){
-                Log.d(TAG, "WILL SEND THE TREND" + trend.getName() + "TO BE SEARCHED");
+                Log.d(TAG, "WILL SEND THE TREND " + trend.getName() + " TO BE SEARCHED");
 
                 Query query = new Query(trend.getName());
 
@@ -128,10 +128,6 @@ public class Trendings extends AppCompatActivity {
 
         for (Trend trend: trends.getTrends()){
             trendingHashtags.add(trend);
-        }
-
-        for (Trend hashtag: trendingHashtags){
-            Log.d(TAG, hashtag.getName());
         }
 
         for (int i=0; i<20; i++){

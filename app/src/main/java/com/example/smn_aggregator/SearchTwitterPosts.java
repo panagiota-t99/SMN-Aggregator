@@ -1,10 +1,18 @@
 package com.example.smn_aggregator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 
 import java.util.ArrayList;
 
@@ -18,6 +26,10 @@ public class SearchTwitterPosts extends AppCompatActivity {
 
     private ArrayList<Status> statuses = new ArrayList<>();
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,15 +42,16 @@ public class SearchTwitterPosts extends AppCompatActivity {
         StatusesWrapper statusesWrapper = (StatusesWrapper) intent.getSerializableExtra("statuses");
         this.statuses = statusesWrapper.getStatuses();
 
-
         Log.d(TAG, "EVERYTHING WORKED!");
 
         Log.d(TAG, "RECEIVED " + statuses.size() + " STATUSES");
 
-        for (Status status: statuses){
-            Log.d(TAG, status.getText());
-        }
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        adapter = new PostAdapter(statuses);
 
-
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
     }
 }

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -97,14 +98,14 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("username", userName);
                 startActivity(intent);*/
 
-                Log.d(TAG, "Twitter Login Done!");
+                Log.d(TAG, "TWITTER LOGIN DONE!");
                 twitterLoginButton.setEnabled(false);
                 checkButtons();
             }
 
             @Override
             public void failure(TwitterException exception) {
-                Log.d(TAG, "Twitter Login Failure!");
+                Log.d(TAG, "TWITTER LOGIN FAILURE!");
             }
         });
 
@@ -124,8 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkButtons(){
        if ((!facebookLoginButton.isEnabled()) && (!twitterLoginButton.isEnabled())){
-            Log.d(TAG, "All buttons are disabled");
-            Log.d(TAG, "Enabling continue button");
+            Log.d(TAG, "ALL BUTTONS ARE DISABLED");
+            Log.d(TAG, "ENABLED CONTINUE BUTTON");
             enableContinueButton();
         }
     }
