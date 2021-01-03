@@ -32,6 +32,8 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
+import twitter4j.auth.RequestToken;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -92,11 +94,6 @@ public class MainActivity extends AppCompatActivity {
             public void success(Result<TwitterSession> result) {
                 TwitterSession twitterSession = TwitterCore.getInstance().getSessionManager().getActiveSession();
                 TwitterAuthToken twitterAuthToken = twitterSession.getAuthToken();
-
-                /*String userName = twitterSession.getUserName();
-                Intent intent = new Intent(MainActivity.this, FunctionsActivity.class);
-                intent.putExtra("username", userName);
-                startActivity(intent);*/
 
                 Log.d(TAG, "TWITTER LOGIN DONE!");
                 twitterLoginButton.setEnabled(false);

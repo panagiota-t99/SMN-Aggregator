@@ -44,5 +44,6 @@ dependencies {
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
 
     implementation group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.7'
+    implementation group: 'androidx.appcompat', name: 'appcompat', version: '1.2.0'
 
 }

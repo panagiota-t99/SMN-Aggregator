@@ -1,18 +1,16 @@
 package com.example.smn_aggregator;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
+import twitter4j.Paging;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -30,6 +28,7 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
     private String text;
     private File file;
     private Query query;
+    private long tweetId;
 
     public static final String TYPE1 = "text";
     public static final String TYPE2 = "photo";
