@@ -26,14 +26,4 @@
         app:layout_constraintStart_toStartOf="@+id/btnTrendingHashtags"
         app:layout_constraintTop_toBottomOf="@+id/btnTrendingHashtags" />
 
-    <Button
-        android:id="@+id/btnStory"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="CREATE STORY"
-        app:layout_constraintEnd_toEndOf="@+id/btnPost"
-        app:layout_constraintStart_toStartOf="@+id/btnPost"
-        app:layout_constraintTop_toBottomOf="@+id/btnPost" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

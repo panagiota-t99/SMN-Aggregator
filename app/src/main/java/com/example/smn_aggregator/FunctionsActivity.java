@@ -13,7 +13,6 @@ public class FunctionsActivity extends AppCompatActivity {
 
     private Button btnTrendingHashtags;
     private Button btnPost;
-    private Button btnStory;
     public static final String TYPE3 = "trends";
     public static final String TAG = "SMN_Aggregator_App_Debug";
 
@@ -24,7 +23,6 @@ public class FunctionsActivity extends AppCompatActivity {
 
         btnTrendingHashtags = findViewById(R.id.btnTrendingHashtags);
         btnPost = findViewById(R.id.btnPost);
-        btnStory = findViewById(R.id.btnStory);
 
         btnTrendingHashtags.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,13 +42,5 @@ public class FunctionsActivity extends AppCompatActivity {
             }
         });
 
-        btnStory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "FunctionsActivity --> onClick: move to StoryActivity");
-                Intent intent = new Intent(FunctionsActivity.this, StoryActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }

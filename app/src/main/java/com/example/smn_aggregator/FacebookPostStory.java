@@ -1,5 +1,6 @@
 package com.example.smn_aggregator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -24,19 +25,23 @@ import java.io.IOException;
 
 public class FacebookPostStory extends AppCompatActivity {
 
+    //only text
+    private static String quote;
+    private Button btnTextPost;
+    private  EditText txtInput;
+
+    //photo
     private EditText hashtag;
+    private static String strHashtag;
     private Button btnSelectImage;
     private Button btnPhotoPost;
-    private ShareDialog shareDialog;
-    private static String strHashtag;
     private ImageView img;
     private static Uri imageUri;
     private Bitmap selectedImage;
     private boolean emptyHashtag;
-    private static String quote;
-    private Button btnTextPost;
-    private  EditText text;
 
+
+    private ShareDialog shareDialog;
     private String type;
 
     public static final int REQUEST_CODE = 1;
@@ -51,9 +56,12 @@ public class FacebookPostStory extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             type = intent.getStringExtra("type");
+            shareDialog = new ShareDialog(FacebookPostStory.this);
+
             if (type.equals(TYPE1)) {
                 setContentView(R.layout.facebook_text);
                 btnTextPost = findViewById(R.id.btnTextPost);
+                txtInput = findViewById(R.id.txtTextInput);
                 checkTextInput();
 
                 btnTextPost.setOnClickListener(new View.OnClickListener() {
@@ -64,9 +72,7 @@ public class FacebookPostStory extends AppCompatActivity {
                                 postQuoteToFacebook();
                         }
                         else {
-                            text = findViewById(R.id.txtTextInput);
-                            quote = text.getText().toString();
-
+                            quote = txtInput.getText().toString();
                             if (!quote.equals(""))
                                 postQuoteToFacebook();
                             else
@@ -77,11 +83,11 @@ public class FacebookPostStory extends AppCompatActivity {
             }
             else if (type.equals(TYPE2)) {
                 setContentView(R.layout.facebook_photo);
-                imageUri = null;
                 emptyHashtag = true;
                 btnSelectImage = findViewById(R.id.btnSelectImage);
                 btnPhotoPost = findViewById(R.id.btnPhotoPost);
                 img = (ImageView)findViewById(R.id.FacebookImageView);
+                hashtag = findViewById(R.id.txtHashtagInput);
                 checkSelectedPhoto();
 
                 btnSelectImage.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +104,11 @@ public class FacebookPostStory extends AppCompatActivity {
                         checkHashtag();
                         if (imageUri!=null) {
                             Log.d(TAG, "FacebookPostStory --> onClick: post accepted ");
-                            postPhotoToFacebook();
+                            try {
+                                postPhotoToFacebook();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }else
                             Toast.makeText(FacebookPostStory.this, "You have to select an image first!", Toast.LENGTH_LONG).show();
                     }
@@ -107,8 +117,10 @@ public class FacebookPostStory extends AppCompatActivity {
         }
     }
 
+    //Checking the format of the given hashtag
+    //Replacing spaces with _
+    //Adding '#' if it's missing
     private void checkHashtag() {
-        hashtag = findViewById(R.id.txtHashtagInput);
         strHashtag = hashtag.getText().toString();
         if (!strHashtag.equals("")){
             String temp = strHashtag.replaceAll("\\s+","_");
@@ -120,18 +132,21 @@ public class FacebookPostStory extends AppCompatActivity {
         }
     }
 
+
+    //Checking if the text field from another social media has been filled
     private void checkTextInput(){
         String tempTwitter = TwitterPostStory.getTxt();
         if (tempTwitter!=null){
             if (!tempTwitter.equals("")) {
                 quote = tempTwitter;
-                text = findViewById(R.id.txtTextInput);
-                text.setText(quote);
+                txtInput.setText(quote);
                 Log.d(TAG, "checkTextInput: " + quote);
             }
         }
     }
 
+
+    //Checking if a photo has already been selected from another social media
     private void checkSelectedPhoto(){
         Uri tempInstagram = InstagramPostStory.getImageUri();
         Uri tempTwitter = TwitterPostStory.getImageUri();
@@ -158,16 +173,18 @@ public class FacebookPostStory extends AppCompatActivity {
     }
 
 
+    //Select photo from Gallery
     private void openGallery() {
         Log.d(TAG, "FacebookPostStory --> openGallery: in gallery");
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, REQUEST_CODE);
     }
 
+
+    //Execute post with only text
     private void postQuoteToFacebook() {
-        Log.d(TAG, "postQuoteOnFacebook: posting " + quote);
-        shareDialog = new ShareDialog(this);
         if (ShareDialog.canShow(ShareLinkContent.class)) {
+            Log.d(TAG, "postQuoteOnFacebook: posting quote -->" + quote);
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setContentUrl(Uri.parse("https://github.com/UomMobileDevelopment"))
                     .setQuote(quote)
@@ -175,15 +192,15 @@ public class FacebookPostStory extends AppCompatActivity {
             shareDialog.show(linkContent);
         }
         else
-            Log.d(TAG, "postToFacebook: error");
+            Log.d(TAG, "postToFacebook: error with quote");
     }
 
-    private void postPhotoToFacebook() {
-        Log.d(TAG, "FacebookPostStory --> onCreate: posting");
 
-        shareDialog = new ShareDialog(this);
-
+    //Execute post with photo (hashtag optional)
+    private void postPhotoToFacebook() throws IOException {
+        selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
         if (!emptyHashtag){
+            Log.d(TAG, "FacebookPostStory --> onCreate: posting photo with hashtag");
             if (shareDialog.canShow(SharePhotoContent.class)) {
                 SharePhoto photo = new SharePhoto.Builder()
                         .setBitmap(selectedImage)
@@ -199,6 +216,7 @@ public class FacebookPostStory extends AppCompatActivity {
                 Log.d(TAG, "postToFacebook: error with hashtag");
         }
         else if (emptyHashtag){
+            Log.d(TAG, "FacebookPostStory --> onCreate: posting photo without hashtag");
             if (shareDialog.canShow(SharePhotoContent.class)) {
                 SharePhoto photo = new SharePhoto.Builder()
                         .setBitmap(selectedImage)
@@ -209,15 +227,16 @@ public class FacebookPostStory extends AppCompatActivity {
                 shareDialog.show(content, ShareDialog.Mode.WEB);
             }
             else
-                Log.d(TAG, "postToFacebook: error");
+                Log.d(TAG, "postToFacebook: error without hashtag");
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            Log.d(TAG, "FacebookPostStory --> onActivityResult: chosen photo");
+            Log.d(TAG, "FacebookPostStory --> onActivityResult: photo has been chosen");
             imageUri = data.getData();
             img.setImageURI(imageUri);
             try {
@@ -226,12 +245,49 @@ public class FacebookPostStory extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        else{
-            Intent intent = new Intent(FacebookPostStory.this, PostActivity.class);
-            startActivity(intent);
+        else {
+            Log.d(TAG, "FacebookPostStory --> onActivityResult: post upload done");
+            Intent i = new Intent(FacebookPostStory.this, PostActivity.class);
+            startActivity(i);
         }
     }
 
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (type.equals(TYPE1))
+            outState.putString("quote", quote);
+        else if (type.equals(TYPE2)) {
+            if (imageUri != null)
+                outState.putString("imageUri", String.valueOf(imageUri));
+            String temp= hashtag.getText().toString();
+            if (temp!= null)
+                outState.putString("hashtag", temp);
+        }
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (type.equals(TYPE1)){
+            String tempQuote = savedInstanceState.getString("quote");
+            if (tempQuote!=null)
+                txtInput.setText(tempQuote);
+        }
+        else if (type.equals(TYPE2)){
+            String tempUri = savedInstanceState.getString("imageUri");
+            if (tempUri!=null){
+                Uri uri = Uri.parse(tempUri);
+                img.setImageURI(uri);
+            }
+
+            String temp = savedInstanceState.getString("hashtag");
+            if (temp!=null)
+                hashtag.setText(temp);
+        }
+    }
 
     public static Uri getImageUri(){ return imageUri; }
     public static String getQuote() { return quote; }

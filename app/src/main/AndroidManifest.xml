@@ -19,7 +19,6 @@
         <activity android:name=".TwitterPostType" />
         <activity android:name=".FacebookPostType" />
         <activity android:name=".InstagramPostStory" />
-        <activity android:name=".StoryActivity" />
         <activity android:name=".FacebookPostStory" />
         <activity android:name=".PostActivity" />
         <activity android:name=".FunctionsActivity" />
