@@ -32,9 +32,7 @@ public class Trendings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trendings);
 
-
         Intent intent = getIntent();
-        Log.d(TAG, "TRENDS ARRIVED");
         trends = (Trends)intent.getSerializableExtra("trends");
 
         Log.d(TAG, "GOT TRENDS FROM INTENT");
@@ -44,7 +42,7 @@ public class Trendings extends AppCompatActivity {
         }
 
         Log.d(TAG, "WE GOT HASHTAGS");
-        Log.d(TAG, "Size = " + trendingHashtags.size());
+        Log.d(TAG, "SIZE = " + trendingHashtags.size());
 
         recyclerView = findViewById(R.id.trendingsRecyclerView);
         recyclerView.setHasFixedSize(true);

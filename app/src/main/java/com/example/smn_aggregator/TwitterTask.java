@@ -28,7 +28,6 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
     private String text;
     private File file;
     private Query query;
-    private long tweetId;
 
     public static final String TYPE1 = "text";
     public static final String TYPE2 = "photo";
@@ -36,10 +35,10 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
     public static final String TYPE4 = "searchPosts";
     public static final String TAG = "SMN_Aggregator_App_Debug";
 
-    public static final String consumer_key = "qoaRhCOH1SZrQ190tUsp3BeVE";
-    public static final String consumer_secret_key= "0voSKioruV9NDNzUp3w7vqSqHZhmgd6LK8MnIzAckBvphsWpwl";
-    public static final String access_token = "1338583364631207944-7DOZADOzgmoo9b2iQ8kCeUBr50JE31";
-    public static final String access_token_secret = "RJKgIm2lDSBQw4Z5aWPsJmJScWrKyBtuOWJUX2LDhvICa";
+    public static final String consumer_key = BuildConfig.twitterConsumerKey;
+    public static final String consumer_secret_key= BuildConfig.twitterConsumerSecret;
+    public static final String access_token = BuildConfig.twitterAccessToken;
+    public static final String access_token_secret = BuildConfig.twitterAccessTokenSecret;
 
     private Context context;
 
