@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         permission = false;
         continueButton = findViewById(R.id.continueButton);
-        continueButton.setEnabled(false);
 
         //FACEBOOK LOGIN BUTTON
         facebookLoginButton = (LoginButton) findViewById(R.id.facebookLoginButton);
@@ -71,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Facebook Login Done!");
                 facebookLoginButton.setEnabled(false);
                 facebookLoginButton.setLogoutText("Log in with Facebook");
-                enableContinueButton();
             }
             @Override
             public void onCancel() {
@@ -117,11 +115,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public void enableContinueButton(){
-        continueButton.setVisibility(View.VISIBLE);
-        continueButton.setEnabled(true);
     }
 
     @Override

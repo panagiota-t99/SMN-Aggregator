@@ -6,22 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".FunctionsActivity">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnTrendingHashtags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Trending Hashtags"
+        android:layout_marginTop="170dp"
+        android:background="@drawable/twitter_style"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="What's Trending?"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnPost"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="CREATE POST"
+        android:background="@drawable/twitter_style"
+        android:text="Create Post"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="@+id/btnTrendingHashtags"
         app:layout_constraintStart_toStartOf="@+id/btnTrendingHashtags"
         app:layout_constraintTop_toBottomOf="@+id/btnTrendingHashtags" />
