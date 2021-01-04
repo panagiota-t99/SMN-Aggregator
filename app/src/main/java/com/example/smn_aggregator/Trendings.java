@@ -27,21 +27,6 @@ public class Trendings extends AppCompatActivity {
     private TrendingsAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    /*private void hashtagClicked(View v){
-        Button buttonPressed = (Button)v;
-        Log.d(TAG, buttonPressed.getText().toString() + " WAS PRESSED!");
-        for (Trend trend: trendingHashtags){
-            if (buttonPressed.getText().toString() == trend.getName()){
-                Log.d(TAG, "WILL SEND THE TREND " + trend.getName() + " TO BE SEARCHED");
-
-                Query query = new Query(trend.getName());
-
-                TwitterTask twitterTask = new TwitterTask(TYPE4, Trendings.this, query);
-                twitterTask.execute();
-            }
-        }
-    }*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

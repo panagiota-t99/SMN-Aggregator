@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private LoginButton facebookLoginButton;
     private CallbackManager facebookCallbackManager;
 
-    private TwitterLoginButton twitterLoginButton;
+    //private TwitterLoginButton twitterLoginButton;
     public static final String TAG = "SMN_Aggregator_App_Debug";
     public static final int PERMISSION_CODE = 100;
 
@@ -52,12 +52,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         facebookCallbackManager = CallbackManager.Factory.create();
-        Twitter.initialize(this);
+        //Twitter.initialize(this);
         setContentView(R.layout.activity_main);
 
         permission = false;
         continueButton = findViewById(R.id.continueButton);
-        continueButton.setEnabled(true);
+        continueButton.setEnabled(false);
 
         //FACEBOOK LOGIN BUTTON
         facebookLoginButton = (LoginButton) findViewById(R.id.facebookLoginButton);
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Facebook Login Done!");
                 facebookLoginButton.setEnabled(false);
                 facebookLoginButton.setLogoutText("Log in with Facebook");
-                checkButtons();
+                enableContinueButton();
             }
             @Override
             public void onCancel() {
@@ -85,11 +85,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         //TWITTER LOGIN BUTTON
-        twitterLoginButton = (TwitterLoginButton)findViewById(R.id.twitterLoginButton);
-        twitterLoginButton.setText("Log in with Twitter");
-        twitterLoginButton.setCallback(new Callback<TwitterSession>() {
+        //twitterLoginButton = (TwitterLoginButton)findViewById(R.id.twitterLoginButton);
+        //twitterLoginButton.setText("Log in with Twitter");
+        /*twitterLoginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
                 TwitterSession twitterSession = TwitterCore.getInstance().getSessionManager().getActiveSession();
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             public void failure(TwitterException exception) {
                 Log.d(TAG, "TWITTER LOGIN FAILURE!");
             }
-        });
+        });*/
 
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,26 +119,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void checkButtons(){
-       if ((!facebookLoginButton.isEnabled()) && (!twitterLoginButton.isEnabled())){
-            Log.d(TAG, "ALL BUTTONS ARE DISABLED");
-            Log.d(TAG, "ENABLED CONTINUE BUTTON");
-            enableContinueButton();
-        }
-    }
-
     public void enableContinueButton(){
+        continueButton.setVisibility(View.VISIBLE);
         continueButton.setEnabled(true);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE == requestCode){
+        /*if(TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE == requestCode){
             twitterLoginButton.onActivityResult(requestCode, resultCode, data);
         }else{
             facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
-        }
+        }*/
+        facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     public void checkPermission() {
@@ -153,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
             String[] permissionsToAsk = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
             ActivityCompat.requestPermissions(MainActivity.this, permissionsToAsk, PERMISSION_CODE);
         }
-
     }
 
     @Override

@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import twitter4j.Paging;
+import twitter4j.Query;
+import twitter4j.QueryResult;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -29,6 +31,10 @@ import twitter4j.conf.ConfigurationBuilder;
 public class ShowTwitterPost extends AppCompatActivity {
 
     public static final String TAG = "SMN_Aggregator_App_Debug";
+    public static final String consumer_key = "qoaRhCOH1SZrQ190tUsp3BeVE";
+    public static final String consumer_secret_key= "0voSKioruV9NDNzUp3w7vqSqHZhmgd6LK8MnIzAckBvphsWpwl";
+    public static final String access_token = "1338583364631207944-7DOZADOzgmoo9b2iQ8kCeUBr50JE31";
+    public static final String access_token_secret = "RJKgIm2lDSBQw4Z5aWPsJmJScWrKyBtuOWJUX2LDhvICa";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +62,6 @@ public class ShowTwitterPost extends AppCompatActivity {
         likeButton.setBackgroundResource(R.drawable.twitterblackheart);
         favoritesCountText.setText(String.valueOf(status.getFavoriteCount()) + " Likes");
         retweetsCountText.setText(String.valueOf(status.getRetweetCount()) + " Retweets");
-
     }
 
     private class DownloadProfileImageTask extends AsyncTask<String, Void, Bitmap>{

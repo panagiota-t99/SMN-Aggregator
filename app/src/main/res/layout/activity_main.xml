@@ -10,35 +10,23 @@
         android:id="@+id/facebookLoginButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="65dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="65dp"
-        android:textAlignment="textEnd"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="170dp"
+        android:layout_marginEnd="84dp"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.twitter.sdk.android.core.identity.TwitterLoginButton
-        android:id="@+id/twitterLoginButton"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="24dp"
-        android:textAlignment="center"
-        android:textSize="12sp"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/continueButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/continuebutton"
         app:layout_constraintEnd_toEndOf="@+id/facebookLoginButton"
         app:layout_constraintStart_toStartOf="@+id/facebookLoginButton"
         app:layout_constraintTop_toBottomOf="@+id/facebookLoginButton" />
-
-    <Button
-        android:id="@+id/continueButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Continue"
-        app:layout_constraintEnd_toEndOf="@+id/twitterLoginButton"
-        app:layout_constraintStart_toStartOf="@+id/twitterLoginButton"
-        app:layout_constraintTop_toBottomOf="@+id/twitterLoginButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
