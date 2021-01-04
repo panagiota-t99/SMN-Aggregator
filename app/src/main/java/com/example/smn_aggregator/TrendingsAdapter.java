@@ -87,6 +87,7 @@ public class TrendingsAdapter extends RecyclerView.Adapter<TrendingsAdapter.Tren
         return hashtagFilter;
     }
 
+    //The hashtags are filtered everytime based on what the user is typing in the SearchView
     private Filter hashtagFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {

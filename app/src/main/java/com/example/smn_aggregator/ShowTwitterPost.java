@@ -39,6 +39,8 @@ public class ShowTwitterPost extends AppCompatActivity {
 
         Intent intent = getIntent();
         Status status = (Status) intent.getSerializableExtra("status");
+        //The status received from SearchTwitterPost is shown in detail here
+        //AsyncTask is used for the user's profile image in order the application not to be delayed
 
         Log.d(TAG, status.getUser().getScreenName() + " ARRIVED TO SHOW!");
 

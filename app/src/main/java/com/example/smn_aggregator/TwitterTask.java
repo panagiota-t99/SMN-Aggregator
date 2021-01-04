@@ -114,6 +114,8 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         Log.d(TAG, "TwitterTask --> postImageTweet: " + file);
     }
 
+    //This method returns trending hashtags for given location woeid.
+    //Current woeid 23424977 is for the United States.
     private void getTwitterTrends(Twitter twitter){
         Trends trends;
         try{
@@ -126,6 +128,7 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         }
     }
 
+    //This method searches twitter posts based on the text of the Trend that has been clicked
     private void searchTwitterPosts(Twitter twitter) {
 
         QueryResult queryResult = null;

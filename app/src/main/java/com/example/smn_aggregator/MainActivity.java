@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+        //Continue button will only work if user has given permission to access phone's storage
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

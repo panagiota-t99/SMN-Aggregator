@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import twitter4j.Status;
 
+//This class was created in order the Status list to be retrievable from the intent
 public class StatusesWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;

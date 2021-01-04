@@ -58,6 +58,7 @@ public class Trendings extends AppCompatActivity {
             public void onHashtagClick(int position) {
                 Log.d(TAG, "WILL SEND THE TREND " + trendingHashtags.get(position).getName() + " TO BE SEARCHED");
 
+                //The text of the hashtag clicked will be the query of the twitter posts search method in TwitterTask
                 Query query = new Query(trendingHashtags.get(position).getName());
 
                 TwitterTask twitterTask = new TwitterTask(TYPE4, Trendings.this, query);
@@ -81,6 +82,7 @@ public class Trendings extends AppCompatActivity {
             }
 
             @Override
+            //Everytime the user makes a change in the search text, a new  search is made
             public boolean onQueryTextChange(String newText) {
                 adapter.getFilter().filter(newText);
                 return false;

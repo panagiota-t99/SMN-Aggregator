@@ -51,6 +51,8 @@ public class SearchTwitterPosts extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+
+        //When user clicks on a specific posts that post will be shown in detail in the ShowTwitterPost activity
         adapter.setOnPostClickListener(new PostAdapter.onPostClickListener() {
             @Override
             public void onPostClick(int position) {
