@@ -14,7 +14,8 @@
         android:theme="@style/Theme.SMN_Aggregator">
         <activity android:name=".ShowTwitterPost"></activity>
         <activity android:name=".SearchTwitterPosts" />
-        <activity android:name=".Trendings" />
+        <activity android:name=".Trendings"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".TwitterPostStory" />
         <activity android:name=".TwitterPostType" />
         <activity android:name=".FacebookPostType" />
