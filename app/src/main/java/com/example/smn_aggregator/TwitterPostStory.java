@@ -62,11 +62,12 @@ public class TwitterPostStory extends AppCompatActivity {
                             if (!txt.equals("")) {
                                 TwitterTask task1 = new TwitterTask(TYPE1, txt);
                                 task1.execute();
+                                Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
+                                startActivity(intent);
                             }
                         }
                         else {
                             txt = txtTweet.getText().toString();
-
                             if (!txt.equals("")) {
                                 TwitterTask task2 = new TwitterTask(TYPE1, txt);
                                 task2.execute();
@@ -102,17 +103,17 @@ public class TwitterPostStory extends AppCompatActivity {
                         if (imageUri!=null) {
                             Log.d(TAG, "TwitterPostStory --> onClick: post accepted ");
                             file = new File(getRealPathFromURI(imageUri));
-                            TwitterTask task = null;
+                            TwitterTask task3 = null;
                             if (txtImageCaption!=null){
                                 if (!txtImageCaption.equals(""))
-                                    task = new TwitterTask(TYPE2, txtImageCaption, file);
+                                    task3 = new TwitterTask(TYPE2, txtImageCaption, file);
                             }
                             else{
                                 txtImageCaption = txtTweetImage.getText().toString();
-                                task = new TwitterTask(TYPE2, txtImageCaption, file);
+                                task3 = new TwitterTask(TYPE2, txtImageCaption, file);
                             }
-                            if (task!=null) {
-                                task.execute();
+                            if (task3!=null) {
+                                task3.execute();
                                 Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
                                 startActivity(intent);
                             }
