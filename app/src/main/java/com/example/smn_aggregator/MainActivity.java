@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 Log.d(TAG, "Facebook Login Done!");
-                facebookLoginButton.setEnabled(false);
-                facebookLoginButton.setLogoutText("Log in with Facebook");
             }
             @Override
             public void onCancel() {
@@ -107,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkPermission();
-                if (permission){
+                if (permission && facebookLoginButton.getText().equals("Log out")){
                     Intent intent = new Intent(MainActivity.this, FunctionsActivity.class);
                     Log.d(TAG, "continue to FunctionsActivity: Approved");
                     startActivity(intent);
