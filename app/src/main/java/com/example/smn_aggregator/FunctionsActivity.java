@@ -38,8 +38,15 @@ public class FunctionsActivity extends AppCompatActivity {
                 Log.d(TAG, "FunctionsActivity --> onClick: move to PostActivity");
                 Intent intent = new Intent(FunctionsActivity.this, PostActivity.class);
                 startActivity(intent);
-
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d(TAG, "onBackPressed: pressed");
+        Intent intent = new Intent(FunctionsActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

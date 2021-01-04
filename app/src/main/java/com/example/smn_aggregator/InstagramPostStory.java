@@ -66,7 +66,7 @@ public class InstagramPostStory extends AppCompatActivity {
     }
 
 
-    //Checking if a photo has already been selected from another social media
+    //This method checks if a photo has already been selected from another social media
     private void checkSelectedPhoto(){
         Uri tempFacebook = FacebookPostStory.getImageUri();
         Uri tempTwitter = TwitterPostStory.getImageUri();
@@ -83,7 +83,7 @@ public class InstagramPostStory extends AppCompatActivity {
     }
 
 
-    //Execute post through the app
+    //This method redirects the user to Instagram's application
     private void postToInstagram() {
         Log.d(TAG, "InstagramPostStory --> onCreate: posting ");
         String type = "image/*";
@@ -95,7 +95,7 @@ public class InstagramPostStory extends AppCompatActivity {
     }
 
 
-    //Select photo from Gallery
+    //This method redirects the user to Gallery
     private void openGallery() {
         Log.d(TAG, "InstagramPostStory --> openGallery: in gallery");
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -111,9 +112,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "continue to FunctionsActivity: Approved");
                     startActivity(intent);
                 }
+                else if (!permission)
+                    Toast.makeText(MainActivity.this,"You have to grant storage access!", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(MainActivity.this,"You have to login to Facebook!", Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     @Override

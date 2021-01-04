@@ -25,9 +25,6 @@ import java.io.IOException;
 
 public class FacebookPostStory extends AppCompatActivity {
 
-    public static final String POST_QUOTE = "post_quote";
-    public static final String IMAGE_URI = "image_uri";
-    public static final String CAPTION = "caption";
     //UI components
     //only text
     private static String quote;
@@ -46,6 +43,9 @@ public class FacebookPostStory extends AppCompatActivity {
 
     private ShareDialog shareDialog;
     private String type;
+    public static final String POST_QUOTE = "post_quote";
+    public static final String IMAGE_URI = "image_uri";
+    public static final String CAPTION = "caption";
     public static final int REQUEST_CODE = 1;
     public static final String TYPE1 = "text";
     public static final String TYPE2 = "photo";
@@ -119,9 +119,9 @@ public class FacebookPostStory extends AppCompatActivity {
         }
     }
 
-    //Checking the format of the given hashtag
-    //Replacing spaces with _
-    //Adding '#' if it's missing
+    //This method checks the format of the given hashtag
+    //Replaces spaces with _
+    //Adds '#' if it's missing
     private void checkHashtag() {
         strHashtag = hashtag.getText().toString();
         if (!strHashtag.equals("")){
@@ -135,7 +135,8 @@ public class FacebookPostStory extends AppCompatActivity {
     }
 
 
-    //Checking if the text field from another social media has been filled
+    //This method checks if the text field from another social media has been filled
+    //In this case, it checks only Twitter because Instagram does not provide only text post
     private void checkTextInput(){
         String tempTwitter = TwitterPostStory.getTxt();
         if (tempTwitter!=null){
@@ -148,7 +149,7 @@ public class FacebookPostStory extends AppCompatActivity {
     }
 
 
-    //Checking if a photo has already been selected from another social media
+    //This method checks if a photo has already been selected from another social media
     private void checkSelectedPhoto(){
         Uri tempInstagram = InstagramPostStory.getImageUri();
         Uri tempTwitter = TwitterPostStory.getImageUri();
@@ -175,7 +176,7 @@ public class FacebookPostStory extends AppCompatActivity {
     }
 
 
-    //Select photo from Gallery
+    //This method redirects the user to Gallery
     private void openGallery() {
         Log.d(TAG, "FacebookPostStory --> openGallery: in gallery");
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -183,7 +184,8 @@ public class FacebookPostStory extends AppCompatActivity {
     }
 
 
-    //Execute post with only text
+    //This method posts the quote to Facebook
+    //The url is always set because Facebook does not allow only text sharing through their API
     private void postQuoteToFacebook() {
         if (ShareDialog.canShow(ShareLinkContent.class)) {
             Log.d(TAG, "postQuoteOnFacebook: posting quote -->" + quote);
@@ -198,7 +200,9 @@ public class FacebookPostStory extends AppCompatActivity {
     }
 
 
-    //Execute post with photo (hashtag optional)
+    //This method posts the photo to Facebook
+    //.setCaption method is deprecated
+    //To maintain the functionality of photo with caption, the hashtag option is available
     private void postPhotoToFacebook() throws IOException {
         selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
         if (!emptyHashtag){

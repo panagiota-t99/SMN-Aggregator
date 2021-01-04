@@ -30,7 +30,7 @@ public class TwitterPostStory extends AppCompatActivity {
     private EditText txtTweetImage;
     private static String txtImageCaption;
     private static Uri imageUri;
-    private ImageView imageView;
+    private ImageView img;
     private File file;
 
     private String type;
@@ -84,7 +84,7 @@ public class TwitterPostStory extends AppCompatActivity {
                 setContentView(R.layout.twitter_photo);
                 btnSelectImage = findViewById(R.id.btnSelectImageTwitter);
                 btnPostTweetImage = findViewById(R.id.btnPostTweetPhoto);
-                imageView = findViewById(R.id.TwitterImageView);
+                img = findViewById(R.id.TwitterImageView);
                 txtTweetImage = findViewById(R.id.txtTweetPhotoInput);
                 checkSelectedPhoto();
                 checkImageCaption();
@@ -127,7 +127,7 @@ public class TwitterPostStory extends AppCompatActivity {
     }
 
 
-    //Select photo from Gallery
+    //This method redirects the user to Gallery
     private void openGallery() {
         Log.d(TAG, "TwitterPostStory --> openGallery: in gallery");
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -135,7 +135,7 @@ public class TwitterPostStory extends AppCompatActivity {
     }
 
 
-    //Convert Uri to File
+    //This method converts Uri to File
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = { MediaStore.Images.Media.DATA };
         Cursor cursor = managedQuery(contentUri, proj, null, null, null);
@@ -145,7 +145,8 @@ public class TwitterPostStory extends AppCompatActivity {
     }
 
 
-    //Checking if the text field from another social media has been filled
+    //This method checks if the text field from another social media has been filled
+    //In this case, it only checks Facebook because Instagram does not provide only text post
     private void checkTextInput(){
         String tempFacebook = FacebookPostStory.getQuote();
         if (tempFacebook != null){
@@ -158,7 +159,9 @@ public class TwitterPostStory extends AppCompatActivity {
     }
 
 
-    //Checking if a caption for the photo has already been filled
+    //This method checks if an image caption from another social media has been filled
+    //In this case, it only checks Facebook's hashtag option because the .setCaption method is deprecated
+    //Instagram redirects the user to their application
     private void checkImageCaption(){
         String tempFacebook = FacebookPostStory.getHashtag();
         if (tempFacebook!=null){
@@ -171,23 +174,24 @@ public class TwitterPostStory extends AppCompatActivity {
     }
 
 
-    //Checking if a photo has already been selected from another social media
+    //This method checks if a photo has already been selected from another social media
     private void checkSelectedPhoto(){
         Uri tempFacebook = FacebookPostStory.getImageUri();
         Uri tempInstagram = InstagramPostStory.getImageUri();
         Log.d(TAG, "checkSelectedPhoto: temp facebook uri " + tempFacebook);
         Log.d(TAG, "checkSelectedPhoto: temp twitter uri " + tempInstagram);
         if (tempFacebook!=null) {
-            imageView.setImageURI(tempFacebook);
+            img.setImageURI(tempFacebook);
             imageUri = tempFacebook;
             file = new File(getRealPathFromURI(imageUri));
         }
         else if (tempInstagram!=null) {
-            imageView.setImageURI(tempInstagram);
+            img.setImageURI(tempInstagram);
             imageUri = tempInstagram;
             file = new File(getRealPathFromURI(imageUri));
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -195,7 +199,7 @@ public class TwitterPostStory extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             Log.d(TAG, "TwitterPostStory --> onActivityResult: chosen photo");
             imageUri = data.getData();
-            imageView.setImageURI(imageUri);
+            img.setImageURI(imageUri);
             file = new File(getRealPathFromURI(imageUri));
             Log.d(TAG, "onActivityResult: " + file);
         }
@@ -236,7 +240,7 @@ public class TwitterPostStory extends AppCompatActivity {
             String tempUri = savedInstanceState.getString(IMAGE_URI);
             if (tempUri!=null){
                 Uri uri = Uri.parse(tempUri);
-                imageView.setImageURI(uri);
+                img.setImageURI(uri);
             }
         }
     }

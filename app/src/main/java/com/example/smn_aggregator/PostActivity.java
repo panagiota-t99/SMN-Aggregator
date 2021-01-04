@@ -52,7 +52,6 @@ public class PostActivity extends AppCompatActivity {
                     else{
                         Toast.makeText(getApplicationContext(), "Instagram must be installed on the device!", Toast.LENGTH_LONG).show();
                     }
-
                 }
             });
 
@@ -67,6 +66,9 @@ public class PostActivity extends AppCompatActivity {
         }
     }
 
+
+    //This method checks if Instagram's application is installed
+    //Instagram's API does not allow posting a photo outside their application
     private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
         try {
             packageManager.getPackageInfo(packageName, 0);
@@ -74,5 +76,14 @@ public class PostActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d(TAG, "onBackPressed: pressed");
+        Intent intent = new Intent(PostActivity.this, FunctionsActivity.class);
+        startActivity(intent);
     }
 }

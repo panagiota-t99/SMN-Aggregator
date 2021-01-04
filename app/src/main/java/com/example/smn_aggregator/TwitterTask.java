@@ -34,6 +34,7 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
     public static final String TYPE3 = "trends";
     public static final String TYPE4 = "searchPosts";
     public static final String TAG = "SMN_Aggregator_App_Debug";
+    public static final int WOEID = 23424977;
 
     public static final String consumer_key = BuildConfig.twitterConsumerKey;
     public static final String consumer_secret_key= BuildConfig.twitterConsumerSecret;
@@ -90,6 +91,8 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         return null;
     }
 
+
+    //This method configures the authentication required for Twitter API
     private Twitter configureTwitter(){
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
@@ -102,11 +105,15 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         return twitter;
     }
 
+
+    //This method posts a tweet
     private void postTextOnlyTweet(Twitter twitter) throws TwitterException {
         twitter.updateStatus(text);
         Log.d(TAG, "TwitterTask --> postTextOnlyTweet: " + text);
     }
 
+
+    //This method posts a photo (caption optional)
     private void postImageTweet(Twitter twitter) throws TwitterException, URISyntaxException {
         StatusUpdate status = new StatusUpdate(text);
         status.setMedia(file);
@@ -119,7 +126,7 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
     private void getTwitterTrends(Twitter twitter){
         Trends trends;
         try{
-            trends = twitter.getPlaceTrends(23424977 );
+            trends = twitter.getPlaceTrends(WOEID );
             Intent intent = new Intent(context, Trendings.class);
             intent.putExtra("trends", trends);
             context.startActivity(intent);
