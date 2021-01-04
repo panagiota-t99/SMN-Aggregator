@@ -25,11 +25,14 @@ import java.io.IOException;
 
 public class FacebookPostStory extends AppCompatActivity {
 
+    public static final String POST_QUOTE = "post_quote";
+    public static final String IMAGE_URI = "image_uri";
+    public static final String CAPTION = "caption";
+    //UI components
     //only text
     private static String quote;
     private Button btnTextPost;
     private  EditText txtInput;
-
     //photo
     private EditText hashtag;
     private static String strHashtag;
@@ -43,7 +46,6 @@ public class FacebookPostStory extends AppCompatActivity {
 
     private ShareDialog shareDialog;
     private String type;
-
     public static final int REQUEST_CODE = 1;
     public static final String TYPE1 = "text";
     public static final String TYPE2 = "photo";
@@ -257,13 +259,13 @@ public class FacebookPostStory extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (type.equals(TYPE1))
-            outState.putString("quote", quote);
+            outState.putString(POST_QUOTE, quote);
         else if (type.equals(TYPE2)) {
             if (imageUri != null)
-                outState.putString("imageUri", String.valueOf(imageUri));
-            String temp= hashtag.getText().toString();
-            if (temp!= null)
-                outState.putString("hashtag", temp);
+                outState.putString(IMAGE_URI, String.valueOf(imageUri));
+            String tempHashtag = hashtag.getText().toString();
+            if (tempHashtag != null)
+                outState.putString(CAPTION, tempHashtag);
         }
     }
 
@@ -272,20 +274,20 @@ public class FacebookPostStory extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (type.equals(TYPE1)){
-            String tempQuote = savedInstanceState.getString("quote");
+            String tempQuote = savedInstanceState.getString(POST_QUOTE);
             if (tempQuote!=null)
                 txtInput.setText(tempQuote);
         }
         else if (type.equals(TYPE2)){
-            String tempUri = savedInstanceState.getString("imageUri");
+            String tempUri = savedInstanceState.getString(IMAGE_URI);
             if (tempUri!=null){
                 Uri uri = Uri.parse(tempUri);
                 img.setImageURI(uri);
             }
 
-            String temp = savedInstanceState.getString("hashtag");
-            if (temp!=null)
-                hashtag.setText(temp);
+            String tempHashtag = savedInstanceState.getString(CAPTION);
+            if (tempHashtag!=null)
+                hashtag.setText(tempHashtag);
         }
     }
 

@@ -41,6 +41,5 @@ public class FunctionsActivity extends AppCompatActivity {
 
             }
         });
-
     }
 }

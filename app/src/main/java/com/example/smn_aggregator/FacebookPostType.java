@@ -9,12 +9,12 @@ import android.view.View;
 import android.widget.Button;
 
 public class FacebookPostType extends AppCompatActivity {
+
     private Button text;
     private Button photo;
     public static final String TAG = "SMN_Aggregator_App_Debug";
     public static final String TYPE1 = "text";
     public static final String TYPE2 = "photo";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,6 @@ public class FacebookPostType extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent!=null){
-
             text = findViewById(R.id.btnFacebookText);
             photo = findViewById(R.id.btnFacebookPhoto);
 

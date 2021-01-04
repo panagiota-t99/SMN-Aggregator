@@ -23,7 +23,6 @@ public class TwitterPostType extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent!=null){
-
             text = findViewById(R.id.btnTwitterText);
             photo = findViewById(R.id.btnTwitterPhoto);
 

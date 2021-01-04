@@ -15,10 +15,10 @@ public class PostActivity extends AppCompatActivity {
     private Button btnPostFacebook;
     private Button btnPostInstagram;
     private Button btnPostTwitter;
+    private PackageManager pm;
 
     public static final String TAG = "SMN_Aggregator_App_Debug";
     public static final String packageName = "com.instagram.android";
-    private PackageManager pm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +27,11 @@ public class PostActivity extends AppCompatActivity {
         
         Intent intent = getIntent();
         if (intent!=null){
-
             pm = getPackageManager();
             btnPostFacebook = findViewById(R.id.btnPostFacebook);
             btnPostInstagram = findViewById(R.id.btnPostInstagram);
             btnPostTwitter = findViewById(R.id.btnPostTwitter);
+
             btnPostFacebook.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -40,7 +40,6 @@ public class PostActivity extends AppCompatActivity {
                     startActivity(intent1);
                 }
             });
-
 
             btnPostInstagram.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,8 +64,6 @@ public class PostActivity extends AppCompatActivity {
                     startActivity(intent1);
                 }
             });
-
-
         }
     }
 
