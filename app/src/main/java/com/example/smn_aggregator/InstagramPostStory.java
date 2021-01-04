@@ -1,5 +1,6 @@
 package com.example.smn_aggregator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,24 +18,23 @@ import java.io.IOException;
 
 public class InstagramPostStory extends AppCompatActivity {
 
+    //UI components
     private Button btnSelectImage;
     private Button btnPost;
     private ImageView img;
     private static Uri imageUri;
-    private Bitmap selectedImage;
 
+    //Used to signal the return from Instagram
     private boolean flag = false;
 
     public static final int REQUEST_CODE = 1;
+    public static final String IMAGE_URI = "image_uri";
     public static final String TAG = "SMN_Aggregator_App_Debug";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instagram_post_story);
-
-        imageUri = null;
 
         Intent intent = getIntent();
         if (intent!=null){
@@ -65,6 +65,8 @@ public class InstagramPostStory extends AppCompatActivity {
         }
     }
 
+
+    //Checking if a photo has already been selected from another social media
     private void checkSelectedPhoto(){
         Uri tempFacebook = FacebookPostStory.getImageUri();
         Uri tempTwitter = TwitterPostStory.getImageUri();
@@ -80,6 +82,8 @@ public class InstagramPostStory extends AppCompatActivity {
         }
     }
 
+
+    //Execute post through the app
     private void postToInstagram() {
         Log.d(TAG, "InstagramPostStory --> onCreate: posting ");
         String type = "image/*";
@@ -90,11 +94,14 @@ public class InstagramPostStory extends AppCompatActivity {
         startActivity(Intent.createChooser(share, "Share to"));
     }
 
+
+    //Select photo from Gallery
     private void openGallery() {
         Log.d(TAG, "InstagramPostStory --> openGallery: in gallery");
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, REQUEST_CODE);
     }
+
 
     @Override
     protected void onPostResume() {
@@ -106,6 +113,7 @@ public class InstagramPostStory extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -113,15 +121,27 @@ public class InstagramPostStory extends AppCompatActivity {
             Log.d(TAG, "InstagramPostStory --> onActivityResult: chosen photo");
             imageUri = data.getData();
             img.setImageURI(imageUri);
-            try {
-                selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
-    public static Uri getImageUri(){
-        return imageUri;
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (imageUri != null)
+            outState.putString(IMAGE_URI, String.valueOf(imageUri));
     }
+
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String tempUri = savedInstanceState.getString(IMAGE_URI);
+        if (tempUri!=null) {
+            Uri uri = Uri.parse(tempUri);
+            img.setImageURI(uri);
+        }
+    }
+
+    public static Uri getImageUri(){ return imageUri; }
 }

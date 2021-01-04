@@ -1,5 +1,6 @@
 package com.example.smn_aggregator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,22 +19,27 @@ import java.io.File;
 
 public class TwitterPostStory extends AppCompatActivity {
 
+    //UI components
+    //only text
     private Button btnText;
     private EditText txtTweet;
     private static String txt;
-
+    //photo
     private Button btnSelectImage;
+    private Button btnPostTweetImage;
     private EditText txtTweetImage;
     private static String txtImageCaption;
-    private Button btnPostTweetImage;
     private static Uri imageUri;
     private ImageView imageView;
     private File file;
 
-
+    private String type;
     public static final int REQUEST_CODE = 2;
     public static final String TYPE1 = "text";
     public static final String TYPE2 = "photo";
+    public static final String TWEET = "tweet";
+    public static final String CAPTION = "caption";
+    public static final String IMAGE_URI = "image_uri";
     public static final String TAG = "SMN_Aggregator_App_Debug";
 
     @Override
@@ -42,10 +48,11 @@ public class TwitterPostStory extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent!=null){
-            String type = intent.getStringExtra("type");
+            type = intent.getStringExtra("type");
             if (type.equals(TYPE1)){
                 setContentView(R.layout.twitter_text);
                 btnText = findViewById(R.id.btnPostTweetText);
+                txtTweet = findViewById(R.id.txtTweetInput);
                 checkTextInput();
 
                 btnText.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +65,6 @@ public class TwitterPostStory extends AppCompatActivity {
                             }
                         }
                         else {
-                            txtTweet = findViewById(R.id.txtTweetInput);
                             txt = txtTweet.getText().toString();
 
                             if (!txt.equals("")) {
@@ -75,10 +81,10 @@ public class TwitterPostStory extends AppCompatActivity {
             }
             else if (type.equals(TYPE2)){
                 setContentView(R.layout.twitter_photo);
-                imageUri = null;
                 btnSelectImage = findViewById(R.id.btnSelectImageTwitter);
                 btnPostTweetImage = findViewById(R.id.btnPostTweetPhoto);
                 imageView = findViewById(R.id.TwitterImageView);
+                txtTweetImage = findViewById(R.id.txtTweetPhotoInput);
                 checkSelectedPhoto();
                 checkImageCaption();
 
@@ -95,19 +101,18 @@ public class TwitterPostStory extends AppCompatActivity {
                     public void onClick(View v) {
                         if (imageUri!=null) {
                             Log.d(TAG, "TwitterPostStory --> onClick: post accepted ");
+                            file = new File(getRealPathFromURI(imageUri));
+                            TwitterTask task = null;
                             if (txtImageCaption!=null){
-                                if (!txtImageCaption.equals("")){
-                                    TwitterTask task2 = new TwitterTask(TYPE2, txtImageCaption, file);
-                                    task2.execute();
-                                    Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
-                                    startActivity(intent);
-                                }
+                                if (!txtImageCaption.equals(""))
+                                    task = new TwitterTask(TYPE2, txtImageCaption, file);
                             }
                             else{
-                                txtTweetImage = findViewById(R.id.txtTweetPhotoInput);
                                 txtImageCaption = txtTweetImage.getText().toString();
-                                TwitterTask task3 = new TwitterTask(TYPE2, txtImageCaption, file);
-                                task3.execute();
+                                task = new TwitterTask(TYPE2, txtImageCaption, file);
+                            }
+                            if (task!=null) {
+                                task.execute();
                                 Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
                                 startActivity(intent);
                             }
@@ -120,12 +125,16 @@ public class TwitterPostStory extends AppCompatActivity {
         }
     }
 
+
+    //Select photo from Gallery
     private void openGallery() {
         Log.d(TAG, "TwitterPostStory --> openGallery: in gallery");
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, REQUEST_CODE);
     }
 
+
+    //Convert Uri to File
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = { MediaStore.Images.Media.DATA };
         Cursor cursor = managedQuery(contentUri, proj, null, null, null);
@@ -134,30 +143,34 @@ public class TwitterPostStory extends AppCompatActivity {
         return cursor.getString(column_index);
     }
 
+
+    //Checking if the text field from another social media has been filled
     private void checkTextInput(){
         String tempFacebook = FacebookPostStory.getQuote();
         if (tempFacebook != null){
             if (!tempFacebook.equals("")) {
                 txt = tempFacebook;
-                txtTweet = findViewById(R.id.txtTweetInput);
                 txtTweet.setText(txt);
                 Log.d(TAG, "checkTextInput: " + txt);
             }
         }
     }
 
+
+    //Checking if a caption for the photo has already been filled
     private void checkImageCaption(){
         String tempFacebook = FacebookPostStory.getHashtag();
         if (tempFacebook!=null){
             if (!tempFacebook.equals("")){
                 txtImageCaption = tempFacebook;
-                txtTweetImage = findViewById(R.id.txtTweetPhotoInput);
                 txtTweetImage.setText(txtImageCaption);
                 Log.d(TAG, "checkImageCaption: " + txtImageCaption);
             }
         }
     }
 
+
+    //Checking if a photo has already been selected from another social media
     private void checkSelectedPhoto(){
         Uri tempFacebook = FacebookPostStory.getImageUri();
         Uri tempInstagram = InstagramPostStory.getImageUri();
@@ -184,6 +197,46 @@ public class TwitterPostStory extends AppCompatActivity {
             imageView.setImageURI(imageUri);
             file = new File(getRealPathFromURI(imageUri));
             Log.d(TAG, "onActivityResult: " + file);
+        }
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (type.equals(TYPE1)){
+            String tempTweet = txtTweet.getText().toString();
+            if (tempTweet!=null)
+                outState.putString(TWEET, tempTweet);
+        }
+        else if (type.equals(TYPE2)){
+            String tempCaption = txtTweetImage.getText().toString();
+            if (tempCaption!=null)
+                outState.putString(CAPTION, tempCaption);
+            if (imageUri!=null)
+                outState.putString(IMAGE_URI, String.valueOf(imageUri));
+        }
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (type.equals(TYPE1)){
+            String tempTweet = savedInstanceState.getString(TWEET);
+            if (tempTweet!=null)
+                txtTweet.setText(tempTweet);
+        }
+        else if (type.equals(TYPE2)){
+            String tempCaption = savedInstanceState.getString(CAPTION);
+            if (tempCaption!=null)
+                txtTweetImage.setText(tempCaption);
+
+            String tempUri = savedInstanceState.getString(IMAGE_URI);
+            if (tempUri!=null){
+                Uri uri = Uri.parse(tempUri);
+                imageView.setImageURI(uri);
+            }
         }
     }
 
