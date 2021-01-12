@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SMN_Aggregator">
-        <activity android:name=".ShowTwitterPost"></activity>
+        <activity android:name=".ShowTwitterPost" />
         <activity android:name=".SearchTwitterPosts" />
         <activity android:name=".Trendings"
             android:configChanges="orientation|screenSize"/>
@@ -39,17 +39,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data
-                    android:host="httpstat.us"
-                    android:pathPrefix="/200"
-                    android:scheme="https"/>
-            </intent-filter>
-            -->
         </activity>
     </application>
 

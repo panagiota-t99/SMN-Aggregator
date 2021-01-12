@@ -139,6 +139,7 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
     private void searchTwitterPosts(Twitter twitter) {
 
         QueryResult queryResult = null;
+        query.resultType(Query.ResultType.popular);
         try {
             queryResult = twitter.search(query);
         } catch (TwitterException twitterException) {
