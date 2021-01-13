@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -49,17 +50,10 @@ import twitter4j.conf.ConfigurationBuilder;
 public class ShowTwitterPost extends AppCompatActivity {
 
     public static final String TAG = "SMN_Aggregator_App_Debug";
+    public static final String TYPE5 = "searchReplies";
+
+    //The post that was clicked from the user is saved here
     private Status currentStatus;
-
-    public static final String consumer_key = BuildConfig.twitterConsumerKey;
-    public static final String consumer_secret_key= BuildConfig.twitterConsumerSecret;
-    public static final String access_token = BuildConfig.twitterAccessToken;
-    public static final String access_token_secret = BuildConfig.twitterAccessTokenSecret;
-
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private TextView repliesTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +62,10 @@ public class ShowTwitterPost extends AppCompatActivity {
 
         Intent intent = getIntent();
         currentStatus = (Status) intent.getSerializableExtra("status");
-        //The status received from SearchTwitterPost is shown in detail here
-        //AsyncTask is used for the user's profile image in order the application not to be delayed
+        /*
+        The status received from SearchTwitterPost is shown in detail here.
+        An AsyncTask is used for the user's profile image in order the application not to be delayed.
+         */
 
         Log.d(TAG, currentStatus.getUser().getScreenName() + " ARRIVED TO SHOW!");
 
@@ -81,7 +77,6 @@ public class ShowTwitterPost extends AppCompatActivity {
         Button likeButton = findViewById(R.id.likeButton);
         TextView favoritesCountText = findViewById(R.id.favoritesCountText);
         TextView retweetsCountText = findViewById(R.id.retweetsCountText);
-        repliesTextView = findViewById(R.id.repliesTextview);
 
         screenNameText.setText(currentStatus.getUser().getScreenName());
         userNameText.setText("@" + currentStatus.getUser().getName());
@@ -91,74 +86,30 @@ public class ShowTwitterPost extends AppCompatActivity {
         favoritesCountText.setText(String.valueOf(currentStatus.getFavoriteCount()) + " Likes");
         retweetsCountText.setText(String.valueOf(currentStatus.getRetweetCount()) + " Retweets");
 
-        new DownloadRepliesTask().execute(currentStatus);
+        Button viewRepliesButton = findViewById(R.id.viewRepliesButton);
 
-    }
+        /*
+        When the seeReplies button is clicked a new twitter task is executed that searches
+        all the replies given to this specific post. Then the user is redirected to
+        TwitterRepliesActivity where all the replies are shown.
+         */
+        viewRepliesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Query query = new Query(currentStatus.getUser().getScreenName());
+                query.setSinceId(currentStatus.getId());
 
-    private class DownloadRepliesTask extends AsyncTask<Status, Void, ArrayList<Status>>{
-
-        @Override
-        protected ArrayList<twitter4j.Status> doInBackground(twitter4j.Status... statuses) {
-            String userName = statuses[0].getUser().getScreenName();
-            Long tweetID = statuses[0].getId();
-            ArrayList<twitter4j.Status> repliesList = new ArrayList<>();
-
-            try{
-                Query query = new Query(userName);
-                query.setSinceId(tweetID);
-                QueryResult result;
-                ConfigurationBuilder cb = new ConfigurationBuilder();
-                cb.setDebugEnabled(true)
-                        .setOAuthConsumerKey(consumer_key)
-                        .setOAuthConsumerSecret(consumer_secret_key)
-                        .setOAuthAccessToken(access_token)
-                        .setOAuthAccessTokenSecret(access_token_secret);
-                TwitterFactory tf = new TwitterFactory(cb.build());
-                Twitter twitter = tf.getInstance();
-
-                /*
-                A counter was added because if we returned all the replies, twitter would give a timeout
-                of 5 minutes to our app and then we couldn't get data from the API. As a result the conversation
-                below the tweet doesn't make total sense.
-                 */
-                int i = 0;
-                do{
-                    result = twitter.search(query);
-                    Log.d(TAG, "FOUND " + result.getTweets().size() + " REPLIES");
-
-                    List<twitter4j.Status> replies = result.getTweets();
-                    for (twitter4j.Status reply: replies){
-
-                            //Log.d(TAG, "TWEET TEXT: " + reply.getText());
-                            repliesList.add(reply);
-
-                    }
-                    i++;
-                }while((query = result.nextQuery()) != null && i<=5);
-            }catch (Exception e){
-                Log.d(TAG, "ERROR IN GETTING REPLIES");
-                return repliesList;
+                Toast.makeText(ShowTwitterPost.this, "Loading replies...", Toast.LENGTH_LONG).show();
+                TwitterTask twitterTask = new TwitterTask(TYPE5, ShowTwitterPost.this, query);
+                twitterTask.execute();
             }
-            return repliesList;
-        }
-
-
-
-        @Override
-        protected void onPostExecute(ArrayList<twitter4j.Status> statuses) {
-            Log.d(TAG, "ON POST FOUND " + statuses.size() + " REPLIES");
-            repliesTextView.setText(statuses.size() + " Replies");
-            recyclerView = findViewById(R.id.repliesRecyclerView);
-            recyclerView.setHasFixedSize(true);
-            layoutManager = new LinearLayoutManager(ShowTwitterPost.this);
-            adapter = new TwitterRepliesAdapter(statuses);
-
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(adapter);
-        }
-
+        });
     }
 
+    /*
+    This AsyncTask is responsible for getting the post's author's profile picture
+    and setting it as the image Bitmap of the imageView
+     */
     private class DownloadProfileImageTask extends AsyncTask<String, Void, Bitmap>{
 
         private ImageView imageView;

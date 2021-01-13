@@ -33,7 +33,14 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
     public static final String TYPE2 = "photo";
     public static final String TYPE3 = "trends";
     public static final String TYPE4 = "searchPosts";
+    public static final String TYPE5 = "searchReplies";
     public static final String TAG = "SMN_Aggregator_App_Debug";
+
+    /*
+    The getTrends method of twitter4j needs a WOEID(Where On Earth Identifier) in order
+    to return the trending hashtags in a specific area. The woeid 23424977 is for the
+    United States
+     */
     public static final int WOEID = 23424977;
 
     public static final String consumer_key = BuildConfig.twitterConsumerKey;
@@ -65,6 +72,11 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         file = f;
     }
 
+    /*
+    Various twitter tasks are used depending on what we need to do. The
+    variations are separated from each other using TYPE constants and the
+    number which represents the task we want to execute
+     */
     @Override
     protected Void doInBackground(String... strings) {
         Twitter twitter = configureTwitter();
@@ -87,12 +99,13 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         }
         else if (type.equals(TYPE4)){
             searchTwitterPosts(twitter);
+        }else if (type.equals(TYPE5)){
+            searchReplies(twitter);
         }
         return null;
     }
 
-
-    //This method configures the authentication required for Twitter API
+    //This method configures the authentication in order to be able to use the Twitter API
     private Twitter configureTwitter(){
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
@@ -105,15 +118,19 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         return twitter;
     }
 
-
-    //This method posts a tweet
+    /*
+    After the user has selected to post a tweet with text only, this method
+    is executed and posts the tweet
+     */
     private void postTextOnlyTweet(Twitter twitter) throws TwitterException {
         twitter.updateStatus(text);
         Log.d(TAG, "TwitterTask --> postTextOnlyTweet: " + text);
     }
 
-
-    //This method posts a photo (caption optional)
+    /*
+    After the user has selected to post a tweet with text and photo, this method
+    is executed and posts the tweet
+     */
     private void postImageTweet(Twitter twitter) throws TwitterException, URISyntaxException {
         StatusUpdate status = new StatusUpdate(text);
         status.setMedia(file);
@@ -121,8 +138,10 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         Log.d(TAG, "TwitterTask --> postImageTweet: " + file);
     }
 
-    //This method returns trending hashtags for given location woeid.
-    //Current woeid 23424977 is for the United States.
+    /*
+    This method returns trending hashtags for given location woeid.
+    Current woeid 23424977 is for the United States.
+     */
     private void getTwitterTrends(Twitter twitter){
         Trends trends;
         try{
@@ -135,7 +154,11 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         }
     }
 
-    //This method searches twitter posts based on the text of the Trend that has been clicked
+    /*
+    After the user clicks on a specific hashtag from the trendings list, this method
+    is executed and searches most popular posts made on Twitter that contain
+    the word in the hashtag
+     */
     private void searchTwitterPosts(Twitter twitter) {
 
         QueryResult queryResult = null;
@@ -156,4 +179,54 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         intent.putExtra("statuses", statusesWrapper);
         context.startActivity(intent);
     }
+
+    /*
+    When the user sees a specific post, he can choose to see all the replies made
+    on the post. This method returns some of the replies, 90 at most, because
+    if we return too many replies twitter sets a 5 minute timeout and we
+    can't then use the API
+     */
+    private void searchReplies(Twitter twitter){
+
+        ArrayList<twitter4j.Status> finalRepliesList = new ArrayList<>();
+        QueryResult queryResult = null;
+
+        try {
+            /*
+            A counter was added because if we returned all the replies, twitter would give a timeout
+            of 5 minutes to our app and then we couldn't get data from the API.
+            */
+            int i = 0;
+            do {
+                queryResult = twitter.search(query);
+                Log.d(TAG, "FOUND " + queryResult.getTweets().size() + " REPLIES");
+                ArrayList<twitter4j.Status> replies = (ArrayList<twitter4j.Status>) queryResult.getTweets();
+
+                for (twitter4j.Status reply : replies) {
+                    finalRepliesList.add(reply);
+                }
+                i++;
+            }while((query = queryResult.nextQuery()) != null && i<=5);
+        }catch (TwitterException e){
+            /*
+            In case twitter sets the timeout, the replies that have already been fetched
+            are shown to the user. However if the timeout has been set, the app can't interact
+            with the Twitter API for 5 minutes
+             */
+            Log.d(TAG, "ERROR IN GETTING REPLIES");
+            StatusesWrapper statusesWrapper = new StatusesWrapper(finalRepliesList);
+            Intent intent = new Intent(context, TwitterRepliesActivity.class);
+            intent.putExtra("replies", statusesWrapper);
+            context.startActivity(intent);
+        }
+
+        /*
+        The result of replies search is sent to the Activity responsible to show them to the user
+         */
+        StatusesWrapper statusesWrapper = new StatusesWrapper(finalRepliesList);
+        Intent intent = new Intent(context, TwitterRepliesActivity.class);
+        intent.putExtra("replies", statusesWrapper);
+        context.startActivity(intent);
+    }
+
 }

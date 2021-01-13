@@ -59,7 +59,11 @@ public class MainActivity extends AppCompatActivity {
         permission = false;
         continueButton = findViewById(R.id.continueButton);
 
-        //FACEBOOK LOGIN BUTTON
+        /*
+        The sign in with facebook button is implemented here. After the user clicks on it
+        a facebook webview appears prompting the user to enter his credentials in order the
+        app to receive facebook authorization.
+         */
         facebookLoginButton = (LoginButton) findViewById(R.id.facebookLoginButton);
         facebookLoginButton.setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY);
         facebookLoginButton.setLoginText("Log in with Facebook");
@@ -82,10 +86,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //TWITTER LOGIN BUTTON
-        //twitterLoginButton = (TwitterLoginButton)findViewById(R.id.twitterLoginButton);
-        //twitterLoginButton.setText("Log in with Twitter");
-        /*twitterLoginButton.setCallback(new Callback<TwitterSession>() {
+
+        //We couldn't make login with twitter button work with twitter4j but it worked with twitterCore library
+        /*TWITTER LOGIN BUTTON
+        twitterLoginButton = (TwitterLoginButton)findViewById(R.id.twitterLoginButton);
+        twitterLoginButton.setText("Log in with Twitter");
+        twitterLoginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
                 TwitterSession twitterSession = TwitterCore.getInstance().getSessionManager().getActiveSession();
@@ -102,7 +108,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        //Continue button will only work if user has given permission to access phone's storage
+        /*
+        Continue button will only work if user has given permission to access phone's storage
+        and has signed in with facebook
+        */
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
         facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    /*
+    This method checks if the user has succesfully granted permission to the storage
+    which will be needed in order to upload an image to any social media
+     */
     public void checkPermission() {
         int hasReadContactsPermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
         if (hasReadContactsPermission == PackageManager.PERMISSION_GRANTED){

@@ -18,6 +18,10 @@ import java.util.ArrayList;
 
 import twitter4j.Status;
 
+/*
+This is the adapter handling the data of the SearchTwitterPosts Activity. All posts returned from twitter
+are sent here in order to be shown to the user using a recycleView.
+ */
 public class TwitterRepliesAdapter extends RecyclerView.Adapter<TwitterRepliesAdapter.TwitterRepliesViewHolder> {
 
     public static final String TAG = "SMN_Aggregator_App_Debug";
@@ -58,6 +62,10 @@ public class TwitterRepliesAdapter extends RecyclerView.Adapter<TwitterRepliesAd
         new DownloadProfileImageTask((ImageView) holder.replyImageView).execute(currentReply.getUser().get400x400ProfileImageURLHttps());
     }
 
+    /*
+    This AsyncTask is responsible for getting every reply's author's profile picture
+    and setting it as the image Bitmap of the imageView
+     */
     private class DownloadProfileImageTask extends AsyncTask<String, Void, Bitmap> {
 
         private ImageView imageView;

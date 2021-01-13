@@ -18,21 +18,23 @@
             android:id="@+id/replyUsernameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_toEndOf="@id/replyImageView"
             android:text="Line1"
             android:textColor="@color/black"
-            android:layout_toEndOf="@id/replyImageView"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/replyText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/replyUsernameText"
-            android:layout_toEndOf="@id/replyImageView"
-            android:textSize="14sp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
-            android:text="Line2" />
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@id/replyImageView"
+            android:text="Line2"
+            android:textSize="16sp" />
 
 
     </RelativeLayout>

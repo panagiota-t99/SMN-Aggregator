@@ -16,6 +16,13 @@ import java.util.List;
 
 import twitter4j.Trend;
 
+/*
+This is the adapter handling the data of the Trendings Activity. All hashtags returned from twitter
+are sent here in order to be shown to the user using a recycleView. Ecery item of the recycleView
+has an onClickListener so when the user clicks on it, he can see posts containing it. Also this
+class implements Filterable in order the user to be able to search between the returned hashtags
+and find what he wants.
+ */
 public class TrendingsAdapter extends RecyclerView.Adapter<TrendingsAdapter.TrendingsViewHolder> implements Filterable {
 
     private ArrayList<Trend> trendingHashtags;
@@ -87,7 +94,7 @@ public class TrendingsAdapter extends RecyclerView.Adapter<TrendingsAdapter.Tren
         return hashtagFilter;
     }
 
-    //The hashtags are filtered everytime based on what the user is typing in the SearchView
+    //The hashtags are filtered based on what the user is typing in the SearchView as he is typing it
     private Filter hashtagFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {

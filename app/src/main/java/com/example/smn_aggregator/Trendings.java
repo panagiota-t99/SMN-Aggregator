@@ -24,6 +24,9 @@ public class Trendings extends AppCompatActivity {
     private ArrayList<Trend> trendingHashtags = new ArrayList<>();
     public static final String TYPE4 = "searchPosts";
 
+    /*
+    A recyclerView is used in order to create a list of all the hashtags returned from the search
+     */
     private RecyclerView recyclerView;
     private TrendingsAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -53,6 +56,10 @@ public class Trendings extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+        /*
+        Each item of the recyclerView has an onClickListener. When the user clicks
+        a specific hashtag, then he is shown posts containing it
+         */
         adapter.setOnHashtagClickListener(new TrendingsAdapter.onHashtagClickListener() {
             @Override
             public void onHashtagClick(int position) {
@@ -67,6 +74,17 @@ public class Trendings extends AppCompatActivity {
         });
     }
 
+    /*
+    This method provides a searchView to the user so that he can search among
+    the hashtags that have already been returned from twitter. We didn't find
+    a way to search live on twitter's hashtags using its API, so we did this
+    for a search functionality. The search is activated pressing the icon on
+    the top right corner of the menu. In order the search text that the user
+    has already added to remain the same on a rotation og the phone, a configChanges
+    has been added to the manifest of this activity and it isn't recreated when
+    changing phone orientation. The search function works as the user types the query
+    and returns all the results having the query as a substring.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

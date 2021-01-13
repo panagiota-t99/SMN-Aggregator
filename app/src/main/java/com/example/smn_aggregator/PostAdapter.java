@@ -13,6 +13,12 @@ import java.util.ArrayList;
 
 import twitter4j.Status;
 
+/*
+This is the adapter handling the data of the SearchTwitterPosts Activity. All posts returned from twitter
+are sent here in order to be shown to the user using a recycleView. The recycleView will also offer an onClick
+function on every item so that the user can see the post in more detail.
+ */
+
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
     private ArrayList<Status> statuses;

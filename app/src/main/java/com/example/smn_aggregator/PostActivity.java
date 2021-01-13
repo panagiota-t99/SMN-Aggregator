@@ -32,6 +32,10 @@ public class PostActivity extends AppCompatActivity {
             btnPostInstagram = findViewById(R.id.btnPostInstagram);
             btnPostTwitter = findViewById(R.id.btnPostTwitter);
 
+            /*
+            When the user clicks on each of the buttons above, he is redirected to the
+            activity that handles the post functionality in each one of the social media.
+             */
             btnPostFacebook.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -66,9 +70,13 @@ public class PostActivity extends AppCompatActivity {
         }
     }
 
-
-    //This method checks if Instagram's application is installed
-    //Instagram's API does not allow posting a photo outside their application
+    /*
+    This method checks if Instagram's application is installed in the phone.
+    Instagram's API doesn't allow posting a photo without going through
+    Facebook App Review. So, when the user wants to post something on Instagram,
+    he is redirected to the Instagram application or if it isn't installed, a toast
+    appears saying that Instagram must br installed.
+     */
     private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
         try {
             packageManager.getPackageInfo(packageName, 0);
@@ -77,7 +85,6 @@ public class PostActivity extends AppCompatActivity {
             return false;
         }
     }
-
 
     @Override
     public void onBackPressed() {

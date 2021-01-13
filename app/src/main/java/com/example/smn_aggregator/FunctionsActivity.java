@@ -24,6 +24,11 @@ public class FunctionsActivity extends AppCompatActivity {
         btnTrendingHashtags = findViewById(R.id.btnTrendingHashtags);
         btnPost = findViewById(R.id.btnPost);
 
+        /*
+        When the trendings button is pressed, a new twitter task searching for the current trends
+        is initialized and the user is redirected to a new activity where the trending
+        hashtags are shown
+         */
         btnTrendingHashtags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -32,6 +37,10 @@ public class FunctionsActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        When the create post button is pressed the user is redirected to an activity where he can
+        in which social media he wants to create a post
+         */
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

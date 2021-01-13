@@ -25,8 +25,12 @@ public class SearchTwitterPosts extends AppCompatActivity {
 
     public static final String TAG = "SMN_Aggregator_App_Debug";
 
+    //The result of the search is saved here
     private ArrayList<Status> statuses = new ArrayList<>();
 
+    /*
+    A recyclerView is used in order to create a list of all the posts returned from the search
+     */
     private RecyclerView recyclerView;
     private PostAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -51,8 +55,11 @@ public class SearchTwitterPosts extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-
-        //When user clicks on a specific posts that post will be shown in detail in the ShowTwitterPost activity
+        /*
+        Each item of the recyclerView has an onClickListener. When the user clicks
+        a specific post, then he is redirected to the ShowTwitterPost activity where
+        he can see more details about the post he clicked
+         */
         adapter.setOnPostClickListener(new PostAdapter.onPostClickListener() {
             @Override
             public void onPostClick(int position) {

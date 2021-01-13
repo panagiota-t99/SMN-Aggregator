@@ -66,7 +66,10 @@ public class InstagramPostStory extends AppCompatActivity {
     }
 
 
-    //This method checks if a photo has already been selected from another social media
+    /*
+    This method checks if a photo has already been selected from another social media.
+    If yes it is set as preselected and for this social media.
+     */
     private void checkSelectedPhoto(){
         Uri tempFacebook = FacebookPostStory.getImageUri();
         Uri tempTwitter = TwitterPostStory.getImageUri();
@@ -82,7 +85,6 @@ public class InstagramPostStory extends AppCompatActivity {
         }
     }
 
-
     //This method redirects the user to Instagram's application
     private void postToInstagram() {
         Log.d(TAG, "InstagramPostStory --> onCreate: posting ");
@@ -94,14 +96,12 @@ public class InstagramPostStory extends AppCompatActivity {
         startActivity(Intent.createChooser(share, "Share to"));
     }
 
-
     //This method redirects the user to Gallery
     private void openGallery() {
         Log.d(TAG, "InstagramPostStory --> openGallery: in gallery");
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, REQUEST_CODE);
     }
-
 
     @Override
     protected void onPostResume() {
@@ -113,7 +113,6 @@ public class InstagramPostStory extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -124,14 +123,12 @@ public class InstagramPostStory extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (imageUri != null)
             outState.putString(IMAGE_URI, String.valueOf(imageUri));
     }
-
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {

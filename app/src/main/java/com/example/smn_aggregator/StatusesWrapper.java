@@ -5,14 +5,16 @@ import java.util.ArrayList;
 
 import twitter4j.Status;
 
-//This class was created in order the Status list to be retrievable from the intent
+/*
+This class is used in order to make the Status class of the twitter4j
+library serializable. This allows Status objects to be put as extras
+and to be retrieved from intents
+ */
 public class StatusesWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private ArrayList<Status> statuses;
-    //private Status status;
 
-    //public StatusesWrapper(Status status) {this.status = status;}
     public StatusesWrapper(ArrayList<Status> statuses){
         this.statuses = statuses;
     }
