@@ -19,16 +19,14 @@ import java.io.File;
 
 public class TwitterPostStory extends AppCompatActivity {
 
-    /*
-    UI components that will be user in TYPE1 (text post only is selected)
-     */
+
+    //UI components that will be user in TYPE1 (text post only is selected)
     private Button btnText;
     private EditText txtTweet;
     private static String txt;
 
-    /*
-    Extra UI components that will be user in TYPE2 (post with both text and photo)
-     */
+
+    //Extra UI components that will be user in TYPE2 (post with both text and photo)
     private Button btnSelectImage;
     private Button btnPostTweetImage;
     private EditText txtTweetImage;

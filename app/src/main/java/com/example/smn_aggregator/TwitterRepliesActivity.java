@@ -23,9 +23,8 @@ public class TwitterRepliesActivity extends AppCompatActivity {
     private ArrayList<Status> replies;
 
 
-    /*
-    A recyclerView is used in order to create a list of all the replies returned from the search
-     */
+
+    //A recyclerView is used in order to create a list of all the replies returned from the search
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;

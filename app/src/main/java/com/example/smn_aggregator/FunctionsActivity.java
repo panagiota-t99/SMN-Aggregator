@@ -38,7 +38,7 @@ public class FunctionsActivity extends AppCompatActivity {
         });
 
         /*
-        When the create post button is pressed the user is redirected to an activity where he can
+        When the create post button is pressed the user is redirected to an activity where he can choose
         in which social media he wants to create a post
          */
         btnPost.setOnClickListener(new View.OnClickListener() {

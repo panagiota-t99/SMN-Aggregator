@@ -75,7 +75,7 @@ public class PostActivity extends AppCompatActivity {
     Instagram's API doesn't allow posting a photo without going through
     Facebook App Review. So, when the user wants to post something on Instagram,
     he is redirected to the Instagram application or if it isn't installed, a toast
-    appears saying that Instagram must br installed.
+    appears saying that Instagram must be installed.
      */
     private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
         try {

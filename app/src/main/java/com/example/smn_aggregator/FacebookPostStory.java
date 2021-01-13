@@ -25,15 +25,12 @@ import java.io.IOException;
 
 public class FacebookPostStory extends AppCompatActivity {
 
-    /*
-    UI components that will be user in TYPE1 (text post only is selected)
-     */
+    //UI components that will be user in TYPE1 (text post only is selected)
     private static String quote;
     private Button btnTextPost;
     private  EditText txtInput;
-    /*
-    Extra UI components that will be user in TYPE2 (post with both text and photo)
-     */
+
+    //Extra UI components that will be user in TYPE2 (post with both text and photo)
     private EditText hashtag;
     private static String strHashtag;
     private Button btnSelectImage;

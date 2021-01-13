@@ -24,9 +24,7 @@ public class Trendings extends AppCompatActivity {
     private ArrayList<Trend> trendingHashtags = new ArrayList<>();
     public static final String TYPE4 = "searchPosts";
 
-    /*
-    A recyclerView is used in order to create a list of all the hashtags returned from the search
-     */
+    //A recyclerView is used in order to create a list of all the hashtags returned from the search
     private RecyclerView recyclerView;
     private TrendingsAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -78,9 +76,9 @@ public class Trendings extends AppCompatActivity {
     This method provides a searchView to the user so that he can search among
     the hashtags that have already been returned from twitter. We didn't find
     a way to search live on twitter's hashtags using its API, so we did this
-    for a search functionality. The search is activated pressing the icon on
+    for a search functionality. The search is activated by pressing the icon on
     the top right corner of the menu. In order the search text that the user
-    has already added to remain the same on a rotation og the phone, a configChanges
+    has already added to remain the same on a rotation of the phone, a configChanges
     has been added to the manifest of this activity and it isn't recreated when
     changing phone orientation. The search function works as the user types the query
     and returns all the results having the query as a substring.

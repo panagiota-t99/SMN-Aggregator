@@ -28,9 +28,7 @@ public class SearchTwitterPosts extends AppCompatActivity {
     //The result of the search is saved here
     private ArrayList<Status> statuses = new ArrayList<>();
 
-    /*
-    A recyclerView is used in order to create a list of all the posts returned from the search
-     */
+    //A recyclerView is used in order to create a list of all the posts returned from the search
     private RecyclerView recyclerView;
     private PostAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;

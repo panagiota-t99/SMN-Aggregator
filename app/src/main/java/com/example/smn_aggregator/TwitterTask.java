@@ -183,8 +183,8 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
     /*
     When the user sees a specific post, he can choose to see all the replies made
     on the post. This method returns some of the replies, 90 at most, because
-    if we return too many replies twitter sets a 5 minute timeout and we
-    can't then use the API
+    if we return too many replies, twitter sets a 5 minute timeout and we
+    can't use the API
      */
     private void searchReplies(Twitter twitter){
 
@@ -220,9 +220,8 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
             context.startActivity(intent);
         }
 
-        /*
-        The result of replies search is sent to the Activity responsible to show them to the user
-         */
+
+        //The result of replies search is sent to the Activity responsible to show them to the user
         StatusesWrapper statusesWrapper = new StatusesWrapper(finalRepliesList);
         Intent intent = new Intent(context, TwitterRepliesActivity.class);
         intent.putExtra("replies", statusesWrapper);

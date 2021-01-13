@@ -18,7 +18,7 @@ import twitter4j.Trend;
 
 /*
 This is the adapter handling the data of the Trendings Activity. All hashtags returned from twitter
-are sent here in order to be shown to the user using a recycleView. Ecery item of the recycleView
+are sent here in order to be shown to the user using a recycleView. Every item of the recycleView
 has an onClickListener so when the user clicks on it, he can see posts containing it. Also this
 class implements Filterable in order the user to be able to search between the returned hashtags
 and find what he wants.
