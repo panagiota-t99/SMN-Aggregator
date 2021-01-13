@@ -108,11 +108,13 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/viewRepliesButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="8dp"
+        android:background="@drawable/twitter_style"
         android:text="See Replies"
         android:textAllCaps="false"
-        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/retweetsCountText"
         app:layout_constraintStart_toEndOf="@+id/retweetsCountText" />
 
