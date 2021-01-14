@@ -8,14 +8,11 @@ import android.util.Log;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.List;
 
-import twitter4j.Paging;
 import twitter4j.Query;
 import twitter4j.QueryResult;
-import twitter4j.Status;
+import twitter4j.ResponseList;
 import twitter4j.StatusUpdate;
-import twitter4j.Trend;
 import twitter4j.Trends;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -28,12 +25,15 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
     private String text;
     private File file;
     private Query query;
+    private long id;
 
     public static final String TYPE1 = "text";
     public static final String TYPE2 = "photo";
     public static final String TYPE3 = "trends";
     public static final String TYPE4 = "searchPosts";
     public static final String TYPE5 = "searchReplies";
+    public static final String TYPE6 = "likeTweet";
+    public static final String TYPE7 = "unlikeTweet";
     public static final String TAG = "SMN_Aggregator_App_Debug";
 
     /*
@@ -72,6 +72,11 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         file = f;
     }
 
+    public TwitterTask(String PostType,long tweetId){
+        type = PostType;
+        id = tweetId;
+    }
+    
     /*
     Various twitter tasks are used depending on what we need to do. The
     variations are separated from each other using TYPE constants and the
@@ -94,16 +99,28 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
                 e.printStackTrace();
             }
         }
-        else if (type.equals(TYPE3)){
+        else if (type.equals(TYPE3))
             getTwitterTrends(twitter);
-        }
-        else if (type.equals(TYPE4)){
+        else if (type.equals(TYPE4))
             searchTwitterPosts(twitter);
-        }else if (type.equals(TYPE5)){
+        else if (type.equals(TYPE5))
             searchReplies(twitter);
+        else if (type.equals(TYPE6)) {
+            try {
+                likeTweet(twitter);
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
+        } else if (type.equals(TYPE7)) {
+            try {
+                unlikeTweet(twitter);
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
+
 
     //This method configures the authentication in order to be able to use the Twitter API
     private Twitter configureTwitter(){
@@ -136,6 +153,19 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         status.setMedia(file);
         twitter.updateStatus(status);
         Log.d(TAG, "TwitterTask --> postImageTweet: " + file);
+    }
+
+
+    //This method executes the like
+    private void likeTweet(Twitter twitter) throws TwitterException {
+        Log.d(TAG, "likeTweet: done");
+        twitter.createFavorite(id);
+    }
+
+    //This method removes the like
+    private void unlikeTweet(Twitter twitter) throws TwitterException {
+        Log.d(TAG, "unlikeTweet: done");
+        twitter.destroyFavorite(id);
     }
 
     /*
@@ -227,5 +257,6 @@ public class TwitterTask extends AsyncTask<String, Void, Void> {
         intent.putExtra("replies", statusesWrapper);
         context.startActivity(intent);
     }
+
 
 }
