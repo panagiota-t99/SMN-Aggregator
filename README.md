@@ -1,4 +1,4 @@
-# Android Mobile Developmnet Project
+# Android Mobile Development Project
 ## SMN-Aggregator
 https://github.com/UomMobileDevelopment/Project_2020-21
 
@@ -45,3 +45,8 @@ https://github.com/UomMobileDevelopment/Project_2020-21
   
      ![Alt text](https://i.postimg.cc/XJrLCMtk/readme14.jpg)
      ![Alt text](https://i.postimg.cc/9MspP8h5/readme15.jpg)
+
+## Libraries
+  - implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+  - implementation 'com.facebook.android:facebook-share:[5,6)'
+  - implementation group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.7'
