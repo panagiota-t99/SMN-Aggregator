@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name">SMN_Aggregator</string>
     <string name="facebook_app_id">140920351143345</string>
-    <string name="com.twitter.sdk.android.CONSUMER_KEY">UiKnIc6bFQxIQHyw20VUVuChf</string>
-    <string name="com.twitter.sdk.android.CONSUMER_SECRET">IUOTAbDg3Y7Hw8qZUrnaIu7E5vwxzlOYMhuejv5ZCLnchEqbFF</string>
 </resources>
