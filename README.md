@@ -39,6 +39,7 @@ https://github.com/UomMobileDevelopment/Project_2020-21
      ![Alt text](https://i.postimg.cc/wBfFMx4B/readme12.jpg)
      ![Alt text](https://i.postimg.cc/Ls6NmgT7/readme13.jpg)
      ![Alt text](https://i.postimg.cc/9MspP8h5/readme15.jpg)
+     ![Alt text](https://i.postimg.cc/VLLGtBNK/readme16.jpg)
      
   6. Δημιουργεί νέο story με φωτογραφία στο facebook ή στο instagram. 
   
