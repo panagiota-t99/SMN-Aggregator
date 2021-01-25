@@ -46,6 +46,11 @@ https://github.com/UomMobileDevelopment/Project_2020-21
      ![Alt text](https://i.postimg.cc/XJrLCMtk/readme14.jpg)
      ![Alt text](https://i.postimg.cc/9MspP8h5/readme15.jpg)
 
+Η εφαρμογή αναπτύχθηκε χρησιμοποιώντας το Android Studio. Για να την τρέξετε θα χρεαστεί
+να προσθέσετε τα απαραίτητα Api Keys του Twitter στο gradle.properties. **Στο στάδιο ανάπτυξης
+για να δημοσιεύσει ο χρήστης σε οποιοδήποτε social media θα πρέπει να είναι δηλωμένος ως 
+tester στο project.**
+
 ## Libraries
   - implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
   - implementation 'com.facebook.android:facebook-share:[5,6)'
