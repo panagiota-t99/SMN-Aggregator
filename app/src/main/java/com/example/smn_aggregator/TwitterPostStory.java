@@ -60,18 +60,30 @@ public class TwitterPostStory extends AppCompatActivity {
                 btnText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        String tempTweet = txtTweet.getText().toString();
                         if (txt != null) {
-                            if (!txt.equals("")) {
+                            if (txt.equals(tempTweet)) {
                                 TwitterTask task1 = new TwitterTask(TYPE1, txt);
                                 task1.execute();
                                 Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
                                 startActivity(intent);
                             }
+                            else{
+                                if (!tempTweet.equals("") && !tempTweet.equals(txt)){
+                                    txt = tempTweet;
+                                    TwitterTask task1 = new TwitterTask(TYPE1, txt);
+                                    task1.execute();
+                                    Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
+                                    startActivity(intent);
+                                }
+                                else
+                                    Toast.makeText(TwitterPostStory.this, "You have to enter a tweet!", Toast.LENGTH_LONG).show();
+                            }
                         }
                         else {
                             txt = txtTweet.getText().toString();
                             if (!txt.equals("")) {
-                                TwitterTask task2 = new TwitterTask(TYPE1, txt);
+                                TwitterTask task2 = new TwitterTask(TYPE1, tempTweet);
                                 task2.execute();
                                 Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
                                 startActivity(intent);
@@ -88,6 +100,7 @@ public class TwitterPostStory extends AppCompatActivity {
                 btnPostTweetImage = findViewById(R.id.btnPostTweetPhoto);
                 img = findViewById(R.id.TwitterImageView);
                 txtTweetImage = findViewById(R.id.txtTweetPhotoInput);
+                imageUri = null;
                 checkSelectedPhoto();
                 checkImageCaption();
 
@@ -106,19 +119,17 @@ public class TwitterPostStory extends AppCompatActivity {
                             Log.d(TAG, "TwitterPostStory --> onClick: post accepted ");
                             file = new File(getRealPathFromURI(imageUri));
                             TwitterTask task3 = null;
-                            if (txtImageCaption!=null){
-                                if (!txtImageCaption.equals(""))
-                                    task3 = new TwitterTask(TYPE2, txtImageCaption, file);
-                            }
-                            else{
+                            if (txtImageCaption == null)
                                 txtImageCaption = txtTweetImage.getText().toString();
-                                task3 = new TwitterTask(TYPE2, txtImageCaption, file);
+                            else{
+                                String tempCaption = txtTweetImage.getText().toString();
+                                if (!tempCaption.equals(txtImageCaption))
+                                    txtImageCaption = tempCaption;
                             }
-                            if (task3!=null) {
-                                task3.execute();
-                                Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
-                                startActivity(intent);
-                            }
+                            task3 = new TwitterTask(TYPE2, txtImageCaption, file);
+                            task3.execute();
+                            Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
+                            startActivity(intent);
                         }
                         else
                             Toast.makeText(TwitterPostStory.this, "You have to select an image first!", Toast.LENGTH_LONG).show();

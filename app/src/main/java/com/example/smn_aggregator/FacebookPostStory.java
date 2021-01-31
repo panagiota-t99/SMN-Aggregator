@@ -68,9 +68,16 @@ public class FacebookPostStory extends AppCompatActivity {
                 btnTextPost.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        String tempQuote = txtInput.getText().toString();
                         if (quote!=null) {
-                            if (!quote.equals(""))
+                            if (quote.equals(tempQuote))
                                 postQuoteToFacebook();
+                            else if (!tempQuote.equals("") && !tempQuote.equals(quote)){
+                                quote = tempQuote;
+                                postQuoteToFacebook();
+                            }
+                            else
+                                Toast.makeText(FacebookPostStory.this, "You have to enter a quote!", Toast.LENGTH_LONG).show();
                         }
                         else {
                             quote = txtInput.getText().toString();
@@ -89,6 +96,7 @@ public class FacebookPostStory extends AppCompatActivity {
                 btnPhotoPost = findViewById(R.id.btnPhotoPost);
                 img = (ImageView)findViewById(R.id.FacebookImageView);
                 hashtag = findViewById(R.id.txtHashtagInput);
+                imageUri = null;
                 checkSelectedPhoto();
 
                 btnSelectImage.setOnClickListener(new View.OnClickListener() {
