@@ -83,7 +83,7 @@ public class TwitterPostStory extends AppCompatActivity {
                         else {
                             txt = txtTweet.getText().toString();
                             if (!txt.equals("")) {
-                                TwitterTask task2 = new TwitterTask(TYPE1, tempTweet);
+                                TwitterTask task2 = new TwitterTask(TYPE1, txt);
                                 task2.execute();
                                 Intent intent = new Intent(TwitterPostStory.this, PostActivity.class);
                                 startActivity(intent);
